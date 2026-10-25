@@ -1,0 +1,18 @@
+{
+    "Imagenes": {
+        "Wallpaper": "thumb-imgpsh_fullsize_anim.png",
+        "Lockscreen": "sic-lockscreen.jpg",
+        "Logo": "sic-logo.png"
+    },
+    "Configuraciones": {
+        "PrediccionTexto": true,
+        "PrediccionMultilenguaje": true,
+        "MostrarPorcentajeBateria": true
+    },
+    "UsuariosExcluidos": [
+        "Default",
+        "Public",
+        "Administrador",
+        "AdminSIC"
+    ]
+}

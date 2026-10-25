@@ -1,0 +1,10 @@
+{
+    "Perfil": "SIC",
+    "Organizacion": "SIC",
+    "Plataforma": "TESSA",
+    "NombreCompleto": "Tecnossystem Smart Setup Assistant",
+    "Version": "2.0.0-alpha",
+    "PrefijoHostname": "BOG",
+    "GenerarLogs": true,
+    "CarpetaLogs": "Logs"
+}

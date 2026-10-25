@@ -1,0 +1,74 @@
+{
+    "Aplicaciones": [
+        {
+            "Nombre": "7-Zip",
+            "Instalador": "7z2603-x64.msi",
+            "Tipo": "MSI",
+            "Argumentos": "/passive /norestart",
+            "Obligatorio": true
+        },
+        {
+            "Nombre": "Adobe Reader",
+            "Instalador": "AcroRdrDCx642600221931_MUI.exe",
+            "Tipo": "EXE",
+            "Argumentos": "/silent",
+            "Obligatorio": true
+        },
+        {
+            "Nombre": "Google Chrome",
+            "Instalador": "googlechromestandaloneenterprise64.msi",
+            "Tipo": "MSI",
+            "Argumentos": "/passive /norestart",
+            "Obligatorio": true
+        },
+        {
+            "Nombre": "Java JRE",
+            "Instalador": "jre-8u503-windows-x64.exe",
+            "Tipo": "EXE",
+            "Argumentos": "",
+            "Obligatorio": true
+        },
+        {
+            "Nombre": "LibreOffice",
+            "Instalador": "LibreOffice_26.8.0_Win_x86-64.msi",
+            "Tipo": "MSI",
+            "Argumentos": "/passive /norestart",
+            "Obligatorio": true
+        },
+        {
+            "Nombre": "Jarvis Browser",
+            "Instalador": "JarvisBrowser-Setup.exe",
+            "Tipo": "EXE",
+            "Argumentos": "/S",
+            "Obligatorio": true
+        },
+        {
+            "Nombre": "DeepL",
+            "Instalador": "DeepLSetup.exe",
+            "Tipo": "EXE",
+            "Argumentos": "",
+            "Obligatorio": true
+        },
+        {
+            "Nombre": "TightVNC",
+            "Instalador": "tightvnc-2.8.88-gpl-setup-64bit.msi",
+            "Tipo": "MSI",
+            "Argumentos": "/passive /norestart",
+            "Obligatorio": true
+        },
+        {
+            "Nombre": "Dell Command Update",
+            "Instalador": "SupportAssistLauncher.exe",
+            "Tipo": "EXE",
+            "Argumentos": "",
+            "Obligatorio": false
+        },
+        {
+            "Nombre": "SupportAssist",
+            "Instalador": "system_update_5.08.04.85.exe",
+            "Tipo": "EXE",
+            "Argumentos": "",
+            "Obligatorio": false
+        }
+    ]
+}

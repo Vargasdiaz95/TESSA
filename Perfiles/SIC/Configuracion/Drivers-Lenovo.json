@@ -1,0 +1,8 @@
+{
+    "Fabricante": "Lenovo",
+    "BusquedaRecursiva": true,
+    "FiltroArchivos": "*.inf",
+    "InstalacionAutomatica": true,
+    "GenerarResumen": true,
+    "GenerarLog": true
+}

@@ -1,0 +1,26 @@
+{
+    "DominiosBloqueados": [
+        "netflix.com",
+        "www.netflix.com",
+        "disneyplus.com",
+        "www.disneyplus.com",
+        "primevideo.com",
+        "www.primevideo.com",
+        "hbomax.com",
+        "www.hbomax.com",
+        "paramountplus.com",
+        "www.paramountplus.com",
+        "tv.apple.com",
+        "www.hulu.com",
+        "www.starplus.com",
+        "www.crunchyroll.com",
+        "youtube.com",
+        "www.youtube.com",
+        "youtu.be",
+        "web.whatsapp.com",
+        "api.whatsapp.com",
+        "chat.whatsapp.com",
+        "whatsapp.com"
+    ],
+    "DireccionLoopback": "127.0.0.1"
+}

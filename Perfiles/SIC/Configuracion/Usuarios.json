@@ -1,0 +1,12 @@
+{
+    "Usuarios": [
+        {
+            "Nombre": "OperadorSIC",
+            "NombreCompleto": "Operador SIC",
+            "CuentaExpira": false,
+            "ContrasenaExpira": false,
+            "PuedeCambiarContrasena": false,
+            "GenerarAleatoria": true
+        }
+    ]
+}

@@ -13,324 +13,437 @@ Módulo: Drivers-Lenovo
 
 ## Descripción
 
-Drivers-Lenovo es el módulo encargado de instalar controladores Lenovo durante el proceso de alistamiento de equipos.
+Drivers-Lenovo es el módulo encargado de la instalación automatizada de controladores Lenovo dentro de TESSA.
 
-Su función principal es identificar y desplegar automáticamente los paquetes de controladores disponibles dentro del repositorio local definido para TESSA.
+Su función principal es localizar, procesar e instalar los archivos INF disponibles en el repositorio de controladores Lenovo, permitiendo la preparación de equipos Lenovo durante los procesos de alistamiento y soporte.
+
+Este módulo forma parte del subsistema de controladores de TESSA y es independiente de cualquier perfil corporativo.
 
 ---
 
-## Origen
+## Ubicación
 
-Este módulo proviene de AIMT versión 1.x, donde evolucionó desde un script Batch hacia una implementación PowerShell con funcionalidades de registro, seguimiento de progreso y generación de reportes.
+### Motor del Módulo
+
+```text
+TESSA
+└── Controladores
+    └── Core
+        └── Drivers-Lenovo.ps1
+```
+
+### Acceso Directo
+
+```text
+TESSA
+└── Controladores
+    └── Drivers-Lenovo.lnk
+```
+
+### Repositorio de Controladores
+
+```text
+TESSA
+└── Controladores
+    └── Lenovo
+```
+
+---
+
+## Estado del Módulo
+
+| Elemento | Estado |
+|-----------|-----------|
+| Migración a TESSA | Completa |
+| Producción | Activo |
+| Documentación | Completa |
+| Refactorización | Parcial |
+| Dependencia AIMT | Eliminada |
+
+Versión actual:
+
+```text
+2.0.0-alpha
+```
 
 ---
 
 ## Objetivos
 
 - Automatizar la instalación de controladores Lenovo.
-- Estandarizar el proceso de actualización de drivers.
-- Mantener registro de actividades realizadas.
-- Reducir errores durante el aprovisionamiento de equipos.
-- Mejorar la trazabilidad del proceso de instalación.
+- Reducir actividades manuales.
+- Estandarizar los procesos de actualización de drivers.
+- Permitir reutilización entre diferentes perfiles corporativos.
+- Mantener trazabilidad mediante registros de ejecución.
+- Facilitar el soporte técnico de equipos Lenovo.
 
 ---
 
-## Evolución Histórica
+## Funcionalidades
 
-| Versión | Descripción |
-|----------|----------|
-| 1.0.0 | Implementación original en Batch |
-| 1.1.0 | Migración a PowerShell |
-| 1.2.0 | Incorporación de alias visual de equipo |
-| 1.3.0 | Instalación con seguimiento individual |
-| 1.3.1 | Estandarización de cabeceras y logs |
-| 1.3.2 | Versión de simulación (pruebas) |
-| 1.3.3 | Resumen final de ejecución |
-| 1.3.4 | Listado completo de controladores instalados |
-| 1.3.5 | Simulación con listado completo |
+### Generación de Alias del Equipo
 
----
+Obtiene el serial del BIOS y genera un identificador visual.
 
-## Funcionalidades Identificadas en AIMT
-
-### Identificación del Equipo
-
-Obtiene el número de serie del BIOS y genera un alias visual con formato:
+Ejemplo:
 
 ```text
-BOGXXXXXX
+BOGABC123
 ```
 
-El alias es utilizado únicamente con propósitos informativos y de registro.
+Este identificador tiene únicamente fines informativos.
+
+No modifica el hostname real del sistema operativo.
 
 ---
 
 ### Descubrimiento Automático de Controladores
 
-Busca de forma recursiva archivos:
+Localiza de forma automática todos los archivos:
 
 ```text
 *.inf
 ```
 
-dentro de:
+presentes dentro de* repositorio Lenovo.
 
-```text
-C:\AIMT\Controladores\Lenovo
-```
-
-incluyendo subdirectorios.
+La búsqueda *ncluye subdirectorios.
 
 ---
 
-### Instalación Automatizada
+### I*stalación de Drivers
 
 Utiliza:
 
-```powershell
+``*text
 pnputil.exe
 ```
 
-para instalar cada controlador detectado.
-
-Comando utilizado:
-
-```powershell
-pnputil /add-driver <archivo.inf> /install
-```
-
----
-
-### Seguimiento de Progreso
-
-Muestra el avance de instalación:
-
-```text
-(1/25)
-(2/25)
-(3/25)
-...
-```
-
-facilitando la trazabilidad durante la ejecución.
-
----
-
-### Resumen de Instalación
-
-Al finalizar genera:
-
-- Conteo total de controladores procesados.
-- Duración de la ejecución.
-- Listado completo de controladores instalados.
-
----
-
-### Generación de Logs
-
-Crea archivos de registro utilizando el formato:
-
-```text
-Drivers_Update_<Equipo>.log
-```
+para realiza* la instalación de los controlador*s encontrados.
 
 Ejemplo:
 
-```text
-Drivers_Update_BOG123ABC.log
+```power*hell
+pnputil /add-driver archivo.i*f /install
 ```
 
 ---
 
-## Flujo Actual
+### Seguimien*o de Progreso
+
+Durante la ejecució* se muestra el estado de avance.
+
+*jemplo:
 
 ```text
+[1/25]
+[2/25]
+[3/*5]
+```
+
+---
+
+### Registro de Resul*ados
+
+Genera registros de ejecució* que incluyen:
+
+- Inicio del proce*o.
+- Usuario ejecutor.
+- Alias del*equipo.
+- Controladores procesados*
+- Errores detectados.
+- Resumen f*nal.
+
+---
+
+### Resumen Final
+
+Al f*nalizar se presenta:
+
+- Fecha de f*nalización.
+- Tiempo total de ejec*ción.
+- Total de controladores pro*esados.
+- Listado completo de cont*oladores instalados.
+
+---
+
+## Estr*ctura Asociada
+
+### Controladores
+*```text
+Controladores
+│
+├── Core
+│*  └── Drivers-Lenovo.ps1
+│
+├── Len*vo
+│   └── M710q
+│
+├── Dell
+│
+└── *rivers-Lenovo.lnk
+```
+
+---
+
+### Lo*s
+
+Ubicación:
+
+```text
+TESSA
+└── L*gs
+```
+
+Ejemplo de log generado:
+
+*``text
+Drivers-Lenovo_BOGABC123.lo*
+```
+
+---
+
+## Flujo de Ejecución
+
+*``text
 Inicio
 │
-├── Configuración temporal de políticas
-├── Identificación del equipo
-├── Inicialización de log
+├── Configuración *e entorno
+├── Obtención del serial*├── Generación del alias visual
+├─* Inicialización del log
 │
-├── Descubrimiento de archivos INF
+├── Desc*brimiento de archivos INF
 │
-├── Instalación
-│   ├── Controlador 1
-│   ├── Controlador 2
-│   ├── Controlador n
+├── In*talación de controladores
+│   ├── *river 1
+│   ├── Driver 2
+│   ├── D*iver N
 │
-├── Consolidación de resultados
+├── Consolidación de resu*tados
 ├── Generación de resumen
-├── Generación de listado final
+├─* Generación de listado final
 │
-└── Finalización
+└──*Finalización
 ```
 
 ---
 
-## Dependencias Detectadas
+## Dependen*ias
 
-### Controladores Lenovo
+### Sistema Operativo
 
-Ubicación actual:
+Window*.
+
+---
+
+### Herramientas del Siste*a
 
 ```text
-C:\AIMT\Controladores\Lenovo
+pnputil.exe
 ```
 
 ---
 
-### Logs
+#*# PowerShell
 
-Ubicación actual:
+Comandos utilizados:*
+```powershell
+Get-CimInstance
+Get*ChildItem
+Start-Process
+Test-Path
+*ew-Item
+Out-File
+Resolve-Path
+Join*Path
+```
 
-```text
+---
+
+## Convención de Ru*as TESSA
+
+A partir de TESSA las ru*as ya no utilizan ubicaciones abso*utas.
+
+### Antes
+
+```powershell
+C:*AIMT\Controladores\Lenovo
+```
+
+```*owershell
 C:\AIMT\Logs
 ```
 
 ---
 
-### Herramientas del Sistema
+#*# Ahora
+
+Las rutas se generan diná*icamente desde la ubicación del sc*ipt.
+
+Implementación:
+
+```powershe*l
+$TessaRoot = (Resolve-Path "$PSS*riptRoot\..\..").Path
+```
+
+Resultado:
 
 ```text
-pnputil.exe
+TESSA
 ```
 
 ---
 
-### PowerShell
+### Ventajas
 
-```powershell
-Start-Process
-Get-ChildItem
-Out-File
+- Portabilidad total.
+- Eliminación de dependencias de AIMT.
+- Compatibilidad con cualquier unidad.
+- Facilidad de despliegue.
+
+Ejemplos válidos:
+
+```text
+C:\TESSA
+```
+
+```text
+D:\TESSA
+```
+
+```text
+E:\Herramientas\TESSA
+```
+
+Siempre que la estructura interna permanezca intacta.
+
+---
+
+## Historial AIMT
+
+El historial ya no se almacena dentro del código.
+
+Se conserva únicamente con fines documentales.
+
+| Versión | Descripción |
+|----------|----------|
+| 1.0.0 | Script original en Batch |
+| 1.1.0 | Conversión a PowerShell con cabecera y log |
+| 1.2.0 | Incorporación de alias visual del equipo |
+| 1.3.0 | Instalación con seguimiento individual |
+| 1.3.1 | Unificación de cabeceras |
+| 1.3.2 | Versión de simulación |
+| 1.3.3 | Producción con resumen final |
+| 1.3.4 | Producción con listado completo de controladores |
+| 1.3.5 | Simulación con listado completo |
+
+---
+
+## Cambios Introducidos en TESSA
+
+### Actualización de Identidad
+
+Antes:
+
+```text
+Somos TSS CO. - Instalación de Controladores Lenovo
+```
+
+Ahora:
+
+```text
+Somos TSS CO. | TESSA
+Tecnossystem Smart Setup Assistant
 ```
 
 ---
 
-## Recursos Utilizados
+### Eliminación del Historial Interno
 
-Actualmente se identifican carpetas relacionadas con controladores Lenovo:
+El historial ya no se almacena dentro de los scripts.
+
+La gestión de cambios se realiza mediante:
+
+- GitHub.
+- Commits.
+- Historial del repositorio.
+- Documentación técnica.
+
+---
+
+### Eliminación de Dependencia AIMT
+
+La dependencia:
 
 ```text
-Controladores
-└── Lenovo
-    └── M710q
+C:\AIMT
+```
+
+fue eliminada completamente.
+
+---
+
+### Nueva Convención de Logs
+
+Antes:
+
+```text
+Drivers_Update_BOGXXXX.log
+```
+
+Ahora:
+
+```text
+Drivers-Lenovo_BOGXXXX.log
 ```
 
 ---
 
 ## Riesgos Detectados
 
-### Ruta Fija
+### Instalación Masiva
 
-Actualmente depende de:
+Actualmente todos los archivos INF encontrados son procesados.
 
-```text
-C:\AIMT\Controladores\Lenovo
-```
+No existe filtrado por:
 
----
-
-### Dependencia por Fabricante
-
-El módulo está orientado exclusivamente a Lenovo.
-
-Esto limita su reutilización para otros fabricantes.
+- Modelo.
+- Familia.
+- Generación.
 
 ---
 
-### Ausencia de Detección de Modelo
+### Dependencia del Repositorio
 
-Actualmente instala todos los archivos INF encontrados.
+La efectividad del módulo depende de la calidad y organización de los controladores almacenados.
 
-No valida:
+---
+
+### Validación de Compatibilidad
+
+Actualmente no existe validación previa entre:
 
 - Modelo del equipo.
-- Compatibilidad de paquete.
-- Familia de dispositivo.
+- Driver encontrado.
+- Compatibilidad del paquete.
 
 ---
 
-### Gestión Básica de Errores
-
-Los errores son registrados pero no existe clasificación ni mecanismo de recuperación.
-
----
-
-## Evolución AIMT → TESSA
-
-### AIMT v1.x
-
-Características identificadas:
-
-- Repositorio local de controladores.
-- Instalación masiva mediante INF.
-- Registro básico de actividades.
-- Dependencia de fabricante.
-
----
-
-### TESSA v2.x
-
-Objetivos:
-
-- Eliminar rutas fijas.
-- Soportar múltiples fabricantes.
-- Detectar modelo automáticamente.
-- Validar compatibilidad antes de instalar.
-- Centralizar configuración.
-- Mejorar análisis de resultados.
-
----
-
-## Arquitectura Objetivo
-
-La lógica permanecerá en:
-
-```text
-Core
-└── Drivers-Lenovo
-```
-
-Los paquetes de controladores deberán almacenarse en:
-
-```text
-Perfiles
-└── SIC
-    └── Controladores
-        └── Lenovo
-```
-
-Ejemplo:
-
-```text
-Perfiles
-└── SIC
-    └── Controladores
-        └── Lenovo
-            ├── M710q
-            ├── M720q
-            └── ThinkCentre
-```
-
----
-
-## Mejoras Planificadas
+## Mejoras Futuras
 
 ### Prioridad Alta
 
-- Separar lógica y repositorio de controladores.
-- Detectar modelo automáticamente.
-- Validar existencia de drivers antes de ejecutar.
-- Registrar resultados estructurados.
+- Detección automática del modelo Lenovo.
+- Validación de controladores antes de instalar.
+- Mejora en el manejo de errores.
 
 ---
 
 ### Prioridad Media
 
-- Soporte para Dell.
-- Soporte para HP.
-- Inventario previo de dispositivos sin controlador.
+- Generación de inventario previo.
+- Reporte estructurado de resultados.
+- Validación posterior a la instalación.
 
 ---
 
@@ -338,16 +451,45 @@ Perfiles
 
 - Descarga automática de controladores.
 - Integración con Lenovo System Update.
-- Generación de reportes gráficos.
+- Generación de reportes avanzados.
 
 ---
 
 ## Estado de Migración
 
-Estado actual:
+### AIMT
 
-Documentado.
+✅ Migración completada.
 
-Pendiente:
+---
 
-Refactorización hacia arquitectura TESSA y desacoplamiento de rutas dependientes de AIMT.
+### TESSA
+
+✅ Módulo operativo.
+
+Versión actual:
+
+```text
+2.0.0-alpha
+```
+
+Próximas actividades:
+
+- Optimización.
+- Refactorización progresiva.
+- Soporte para nuevos fabricantes.
+
+---
+
+## Responsable
+
+```text
+Somos TSS CO.
+```
+
+Proyecto:
+
+```text
+TESSA
+Tecnossystem Smart Setup Assistant
+```

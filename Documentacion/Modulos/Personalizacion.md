@@ -13,31 +13,74 @@ Módulo: Personalizacion
 
 ## Descripción
 
-Personalizacion es el módulo encargado de aplicar configuraciones visuales y ajustes de experiencia de usuario durante el proceso de alistamiento del equipo.
+Personalizacion es el módulo encargado de aplicar la configuración visual corporativa y determinados ajustes de experiencia de usuario en Windows para el perfil SIC.
 
-Su función principal es garantizar que todos los usuarios reciban una experiencia corporativa homogénea conforme a las directrices definidas por la organización.
+Su objetivo es estandarizar la apariencia y la configuración básica de todos los perfiles de usuario del equipo.
 
 ---
 
-## Origen
+## Ubicación
 
-Este módulo proviene de AIMT versión 1.x, donde era utilizado para aplicar configuraciones corporativas sobre fondos de pantalla y ajustes de experiencia de usuario en Windows.
+### Script
 
-Dentro de TESSA evolucionará hacia un módulo reutilizable capaz de aplicar configuraciones específicas según el perfil seleccionado.
+```text
+TESSA
+└── Perfiles
+    └── SIC
+        └── Core
+            └── Personalizacion.ps1
+```
+
+### Acceso Directo
+
+```text
+TESSA
+└── Perfiles
+    └── SIC
+        └── Personalizacion.lnk
+```
+
+### Recursos Utilizados
+
+```text
+TESSA
+└── Perfiles
+    └── SIC
+        └── Wallpapers
+```
+
+---
+
+## Estado del Módulo
+
+| Elemento | Estado |
+|----------|----------|
+| Migración a TESSA | Completa |
+| Producción | Activo |
+| Documentación | Completa |
+| Refactorización | Parcial |
+| Dependencia AIMT | Eliminada |
+
+Versión actual:
+
+```text
+2.0.0-alpha
+```
 
 ---
 
 ## Objetivos
 
-- Aplicar imagen corporativa.
-- Configurar parámetros visuales del sistema.
-- Configurar perfiles existentes y futuros.
+- Aplicar fondos corporativos.
+- Configurar perfiles existentes.
+- Configurar perfiles futuros.
 - Estandarizar la experiencia de usuario.
-- Automatizar ajustes posteriores a la instalación del sistema operativo.
+- Aplicar configuraciones de productividad.
+- Automatizar ajustes de Windows.
 
 ---
 
-## Funcionalidades Identificadas en AIMT
+## Funcionalidades
 
 ### Configuración de Fondo Corporativo
 
@@ -47,10 +90,10 @@ Actualmente utiliza:
 thumb-imgpsh_fullsize_anim.png
 ```
 
-Origen:
+Ubicación:
 
 ```text
-C:\AIMT\Wallpapers
+Perfiles\SIC\Wallpapers
 ```
 
 Destino:
@@ -61,27 +104,33 @@ C:\Windows\Web\Screen
 
 ---
 
-### Configuración para Nuevos Usuarios
+### Configuración de Nuevos Usuarios
 
-Modifica el perfil:
+Aplica configuraciones sobre:
 
 ```text
 HKU\.DEFAULT
 ```
 
-para que todos los usuarios creados posteriormente reciban la configuración corporativa definida.
+permitiendo que todos los usuarios creados posteriormente hereden las personalizaciones.
 
 ---
 
 ### Configuración de Usuarios Existentes
 
-Aplica configuraciones sobre los perfiles ya presentes en:
+Recorre:
 
 ```text
 C:\Users
 ```
 
-excluyendo:
+y aplica configuraciones a los usuarios existentes.
+
+---
+
+### Usuarios Excluidos
+
+Actualmente:
 
 ```text
 Default
@@ -97,13 +146,12 @@ AdminSIC
 Habilita:
 
 ```text
-Predicción de texto por teclado físico
+EnableHwkbTextPrediction
 ```
 
-mediante las claves:
+y
 
 ```text
-EnableHwkbTextPrediction
 EnableHwkbTextPredictionMultilingual
 ```
 
@@ -111,60 +159,70 @@ EnableHwkbTextPredictionMultilingual
 
 ### Porcentaje de Batería
 
-Habilita la visualización del porcentaje de batería mediante:
+Habilita:
 
 ```text
 ShowPercentage
 ```
 
+cuando el sistema operativo soporta dicha característica.
+
 ---
 
-### Gestión de Hives de Usuario
+### Gestión de NTUSER.DAT
 
-Carga dinámicamente:
+Carga temporalmente los perfiles de usuario para aplicar configuraciones sin necesidad de inicio de sesión.
+
+---
+
+## Recursos Utilizados
+
+Actualmente se encuentran disponibles:
 
 ```text
-NTUSER.DAT
+sic-lockscreen.jpg
+sic-logo.png
+sic-wallpaper.jpeg
+thumb-imgpsh_fullsize_anim.png
 ```
-
-para aplicar configuraciones directamente sobre perfiles no conectados.
 
 ---
 
-## Flujo Actual
+## Flujo de Ejecución
 
 ```text
 Inicio
 │
-├── Identificación del equipo
-├── Copia de recursos gráficos
+├── Configuración de entorno
+├── Generación de alias
+├── Inicialización de log
+│
+├── Copia de wallpaper
 │
 ├── Configuración Default User
-│   ├── Fondo corporativo
+│   ├── Wallpaper
 │   ├── Predicción de texto
-│   └── Porcentaje de batería
+│   └── Porcentaje batería
 │
-├── Enumeración de perfiles
+├── Recorrido de usuarios
 │
-├── Aplicación por usuario
-│   ├── Carga de NTUSER.DAT
-│   ├── Fondo corporativo
+├── Aplicación de configuraciones
+│   ├── Wallpaper
 │   ├── Predicción de texto
-│   ├── Porcentaje de batería
-│   └── Descarga de hive
+│   └── Porcentaje batería
+│
+├── Registro de resultado
 │
 └── Finalización
 ```
 
 ---
 
-## Dependencias Detectadas
+## Dependencias
 
-### Recursos Gráficos
+### Sistema Operativo
 
-```text
-C:\AIMT\Wallpapers
-```
+Windows.
 
 ---
 
@@ -192,24 +250,33 @@ C:\Windows\Web\Screen
 
 ---
 
-## Recursos Utilizados
+### PowerShell
 
-Actualmente se identifican los siguientes archivos gráficos:
+Comandos utilizados:
 
-```text
-sic-lockscreen.jpg
-sic-logo.png
-sic-wallpaper.jpeg
-thumb-imgpsh_fullsize_anim.png
+```powershell
+Get-CimInstance
+Get-ChildItem
+Copy-Item
+Resolve-Path
+Join-Path
+Test-Path
+Out-File
 ```
 
 ---
 
-## Riesgos Detectados
+## Convención de Rutas TESSA
 
-### Rutas Fijas
+Implementación actual:
 
-Actualmente existen dependencias directas con:
+```powershell
+$TessaRoot = (Resolve-Path "$PSScriptRoot\..\..\..").Path
+```
+
+---
+
+### Antes
 
 ```text
 C:\AIMT\Wallpapers
@@ -217,126 +284,168 @@ C:\AIMT\Wallpapers
 
 ---
 
-### Imagen Embebida
+### Ahora
 
-El archivo de fondo se encuentra definido directamente dentro del código.
-
-Ejemplo:
-
-```powershell
-thumb-imgpsh_fullsize_anim.png
+```text
+Perfiles\SIC\Wallpapers
 ```
 
 ---
 
-### Configuración Dependiente de SIC
+### Logs
 
-La selección de recursos visuales pertenece a la identidad corporativa actual y debería administrarse mediante perfiles.
-
----
-
-### Sin Validación de Recursos
-
-No se verifica previamente la existencia de la imagen antes de aplicarla.
-
----
-
-### Sin Registro de Eventos
-
-Actualmente no genera archivo de log propio.
-
----
-
-## Evolución AIMT → TESSA
-
-### AIMT v1.x
-
-Características identificadas:
-
-- Configuración visual específica para SIC.
-- Recursos definidos dentro del código.
-- Rutas fijas.
-- Sin validación de recursos.
-
----
-
-### TESSA v2.x
-
-Objetivos:
-
-- Separar recursos visuales del código.
-- Soportar múltiples perfiles corporativos.
-- Incorporar validaciones.
-- Generar registros de ejecución.
-- Centralizar configuraciones visuales.
-
----
-
-## Arquitectura Objetivo
-
-La lógica permanecerá en:
+Ubicación:
 
 ```text
-Core
-└── Personalizacion
-```
-
-Los recursos visuales y configuraciones corporativas deberán almacenarse en:
-
-```text
-Perfiles
-└── SIC
-    └── FondosPantalla
+TESSA\Logs
 ```
 
 Ejemplo:
 
 ```text
-Perfiles
-└── SIC
-    ├── FondosPantalla
-    │   ├── wallpaper.jpg
-    │   ├── lockscreen.jpg
-    │   └── logo.png
-    │
-    └── Configuracion
+Personalizacion_BOGABC123.log
 ```
 
 ---
 
-## Mejoras Planificadas
+## Historial AIMT
+
+El historial deja de existir dentro del código.
+
+Se conserva únicamente mediante documentación.
+
+| Versión | Descripción |
+|----------|----------|
+| 1.0.0 | Script original Batch |
+| 1.1.0 | Conversión a PowerShell |
+| 1.1.1 | Incorporación de pausa final |
+
+---
+
+## Cambios Introducidos en TESSA
+
+### Actualización de Identidad
+
+Antes:
+
+```text
+Somos TSS CO. - Rutina de Personalización de Entorno
+```
+
+Ahora:
+
+```text
+Somos TSS CO. | TESSA
+Tecnossystem Smart Setup Assistant
+```
+
+---
+
+### Eliminación de Dependencia AIMT
+
+La referencia:
+
+```text
+C:\AIMT\Wallpapers
+```
+
+fue eliminada completamente.
+
+---
+
+### Incorporación de Logs
+
+Se incorpora registro de ejecución dentro de:
+
+```text
+TESSA\Logs
+```
+
+---
+
+### Eliminación del Historial Interno
+
+La trazabilidad se realiza mediante:
+
+- GitHub.
+- Commits.
+- Historial del repositorio.
+- Documentación técnica.
+
+---
+
+## Riesgos Detectados
+
+### Dependencia de Recursos
+
+La ejecución depende de la existencia de los fondos corporativos.
+
+---
+
+### Configuración de Registro
+
+Requiere permisos administrativos.
+
+---
+
+### Exclusiones Fijas
+
+Los usuarios excluidos están definidos directamente en el script.
+
+---
+
+## Mejoras Futuras
 
 ### Prioridad Alta
 
-- Eliminación de rutas fijas.
-- Configuración mediante perfiles.
-- Validación de recursos gráficos.
-- Registro de ejecución.
+- Validación previa de recursos gráficos.
+- Registro detallado de configuraciones aplicadas.
 
 ---
 
 ### Prioridad Media
 
-- Soporte para múltiples fondos corporativos.
-- Aplicación de pantalla de bloqueo.
-- Configuración de iconografía institucional.
+- Configuración dinámica de recursos.
+- Soporte para perfiles adicionales.
 
 ---
 
 ### Prioridad Baja
 
-- Temas corporativos.
-- Configuración avanzada de interfaz.
-- Personalización dinámica según perfil.
+- Cambio automático de pantalla de bloqueo.
+- Aplicación de branding corporativo avanzado.
 
 ---
 
 ## Estado de Migración
 
-Estado actual:
+### AIMT
 
-Documentado.
+✅ Migración completada.
 
-Pendiente:
+---
 
-Separación entre lógica de personalización y recursos específicos del perfil SIC.
+### TESSA
+
+✅ Módulo operativo.
+
+Versión actual:
+
+```text
+2.0.0-alpha
+```
+
+---
+
+## Responsable
+
+```text
+Somos TSS CO.
+```
+
+Proyecto:
+
+```text
+TESSA
+Tecnossystem Smart Setup Assistant
+```

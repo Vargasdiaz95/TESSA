@@ -13,107 +13,275 @@ Módulo: Init
 
 ## Descripción
 
-Init es el módulo responsable de ejecutar el proceso inicial de preparación de equipos dentro de TESSA.
+Init es el módulo principal de preparación y alistamiento de equipos dentro de TESSA.
 
-Actúa como punto de entrada principal para las tareas de instalación de software, configuración del sistema operativo y aplicación de configuraciones corporativas definidas por el perfil seleccionado.
+Es responsable de ejecutar la instalación de aplicaciones corporativas, habilitar componentes del sistema operativo, aplicar configuraciones iniciales y preparar el equipo para su entrega o uso operativo.
+
+Este módulo constituye el punto de entrada principal para el proceso de alistamiento del perfil SIC.
 
 ---
 
-## Origen
+## Ubicación
 
-Este módulo proviene de AIMT versión 1.x, donde era utilizado como rutina principal para el despliegue de aplicaciones y configuración inicial de equipos.
+### Script
 
-Dentro de TESSA se convierte en el orquestador principal del proceso de alistamiento.
+```text
+TESSA
+└── Perfiles
+    └── SIC
+        └── Core
+            └── Init.ps1
+```
+
+### Acceso Directo
+
+```text
+TESSA
+└── Perfiles
+    └── SIC
+        └── Init.lnk
+```
+
+---
+
+## Estado del Módulo
+
+| Elemento | Estado |
+|----------|----------|
+| Migración a TESSA | Completa |
+| Producción | Activo |
+| Documentación | Completa |
+| Refactorización | Parcial |
+| Dependencia AIMT | Eliminada |
+
+Versión actual:
+
+```text
+2.0.0-alpha
+```
 
 ---
 
 ## Objetivos
 
-- Preparar el entorno de trabajo.
+- Automatizar el alistamiento inicial de equipos.
 - Instalar aplicaciones corporativas.
-- Habilitar componentes requeridos por el sistema.
-- Aplicar configuraciones iniciales.
-- Estandarizar el alistamiento de equipos.
-- Registrar la ejecución del proceso.
+- Habilitar componentes requeridos por Windows.
+- Configurar parámetros básicos del sistema.
+- Estandarizar la preparación de equipos.
+- Reducir errores manuales.
+- Mantener trazabilidad mediante registros de ejecución.
 
 ---
 
-## Funcionalidades Identificadas en AIMT
+## Funcionalidades
 
-### Gestión de la Ejecución
+### Generación de Alias de Equipo
 
-- Validación inicial del entorno.
-- Configuración temporal de Execution Policy.
-- Generación de archivo de log.
-- Medición de tiempo de ejecución.
+Obtiene el serial del BIOS y genera un identificador visual.
 
----
-
-### Identificación del Equipo
-
-Obtiene el número de serie del dispositivo y genera un nombre de equipo siguiendo el formato:
+Formato:
 
 ```text
 BOGXXXXXX
 ```
 
-donde los últimos seis caracteres corresponden al serial del BIOS.
+Ejemplo:
+
+```text
+BOGABC123
+```
+
+Este identificador también se utiliza como nuevo nombre del equipo.
 
 ---
 
 ### Instalación de Aplicaciones
 
-Actualmente despliega:
+Actualmente administra la instalación de:
 
-| Aplicación | Método |
-|------------|---------|
-| 7-Zip | MSI |
-| Adobe Reader | EXE |
-| Google Chrome Enterprise | MSI |
-| Java Runtime Environment | EXE |
-| LibreOffice | MSI |
-| Jarvis Browser | EXE |
-| DeepL | EXE |
-| TightVNC | MSI |
-| Dell Command Update | EXE |
-| SupportAssist | EXE |
+- 7-Zip
+- Adobe Reader
+- Google Chrome
+- Java Runtime Environment (JRE)
+- LibreOffice
+- Jarvis Browser
+- DeepL
+- TightVNC
+- Dell Command Update
+- SupportAssist
 
 ---
 
-### Configuración del Sistema
+### Habilitación de .NET Framework 3.5
 
-Realiza las siguientes acciones:
-
-- Habilita .NET Framework 3.5.
-- Renombra el equipo.
-- Cambia la etiqueta de la unidad C a "Windows".
-
----
-
-### Generación de Logs
-
-Genera archivos de registro con el formato:
+Utiliza:
 
 ```text
-Init_NombreEquipo.log
+DISM.exe
+```
+
+para habilitar la característica:
+
+```text
+NetFx3
+```
+
+a partir de los archivos almacenados localmente dentro de TESSA.
+
+---
+
+### Renombrado del Equipo
+
+Aplica el nombre generado a partir del serial del BIOS.
+
+Ejemplo:
+
+```text
+BOGABC123
+```
+
+---
+
+### Etiquetado de Unidad
+
+Configura la unidad:
+
+```text
+C:
+```
+
+con la etiqueta:
+
+```text
+Windows
+```
+
+---
+
+### Registro de Actividades
+
+Genera un log detallado de la ejecución.
+
+Incluye:
+
+- Inicio.
+- Usuario.
+- Equipo.
+- Aplicaciones instaladas.
+- Configuraciones aplicadas.
+- Resumen final.
+
+---
+
+## Aplicaciones Gestionadas
+
+### Fase 1
+
+Aplicaciones base:
+
+- 7-Zip
+- Adobe Reader
+- Google Chrome
+- Java Runtime Environment
+- LibreOffice
+
+---
+
+### Fase 2
+
+Aplicaciones complementarias:
+
+- Jarvis Browser
+- DeepL
+
+---
+
+### Fase 3
+
+Herramientas de soporte:
+
+- TightVNC
+- Dell Command Update
+- SupportAssist
+
+---
+
+### Fase 4
+
+Configuración del sistema:
+
+- .NET Framework 3.5
+
+---
+
+## Estructura Asociada
+
+### Perfil SIC
+
+```text
+Perfiles
+└── SIC
+```
+
+---
+
+### Aplicaciones
+
+```text
+Software
+└── Aplicaciones
+```
+
+Archivos esperados:
+
+```text
+7z2603-x64.msi
+AcroRdrDCx642600221931_MUI.exe
+googlechromestandaloneenterprise64.msi
+jre-8u503-windows-x64.exe
+LibreOffice_26.8.0_Win_x86-64.msi
+JarvisBrowser-Setup.exe
+DeepLSetup.exe
+tightvnc-2.8.88-gpl-setup-64bit.msi
+SupportAssistLauncher.exe
+system_update_5.08.04.85.exe
+```
+
+---
+
+### Componentes
+
+```text
+Software
+└── Componentes
+    └── .NetFx3.5
+```
+
+---
+
+### Logs
+
+```text
+Logs
 ```
 
 Ejemplo:
 
 ```text
-Init_BOG123ABC.log
+Init_BOGABC123.log
 ```
 
 ---
 
-## Flujo Actual
+## Flujo de Ejecución
 
 ```text
 Inicio
 │
-├── Configuración temporal del entorno
-├── Obtención de información del equipo
-├── Inicialización del log
+├── Preparación de entorno
+├── Generación de alias del equipo
+├── Creación de log
 │
 ├── Fase 1
 │   ├── 7-Zip
@@ -134,29 +302,74 @@ Inicio
 ├── Fase 4
 │   └── .NET Framework 3.5
 │
-├── Cambio de nombre del equipo
-├── Cambio de etiqueta de volumen
-├── Registro de cierre
+├── Renombrado del equipo
+├── Cambio de etiqueta de unidad
+├── Generación de resumen
+│
 └── Finalización
 ```
 
 ---
 
-## Dependencias Detectadas en AIMT
+## Dependencias
 
-### Aplicaciones
+### Sistema Operativo
+
+Windows.
+
+---
+
+### Herramientas del Sistema
+
+```text
+DISM.exe
+```
+
+```text
+msiexec.exe
+```
+
+---
+
+### PowerShell
+
+Funciones utilizadas:
+
+```powershell
+Get-CimInstance
+Get-Date
+Start-Process
+Resolve-Path
+Join-Path
+Out-File
+Test-Path
+New-Item
+Rename-Computer
+```
+
+---
+
+## Convención de Rutas TESSA
+
+A partir de TESSA las rutas se resuelven de forma dinámica.
+
+Implementación:
+
+```powershell
+$TessaRoot = (Resolve-Path "$PSScriptRoot\..\..\..").Path
+```
+
+---
+
+### Antes
 
 ```text
 C:\AIMT\Apps
 ```
 
-### Componentes
-
 ```text
 C:\AIMT\Componentes
 ```
-
-### Logs
 
 ```text
 C:\AIMT\Logs
@@ -164,72 +377,260 @@ C:\AIMT\Logs
 
 ---
 
-## Limitaciones Detectadas
+### Ahora
 
-### Rutas Fijas
+```text
+TESSA\Software\Aplicaciones
+```
 
-Actualmente el módulo depende de rutas codificadas de forma estática.
+```text
+TESSA\Software\Componentes
+```
+
+```text
+TESSA\Logs
+```
+
+---
+
+### Ventajas
+
+- Eliminación de dependencias de AIMT.
+- Portabilidad.
+- Compatibilidad con cualquier unidad.
+- Despliegue simplificado.
+
+Ejemplos válidos:
+
+```text
+C:\TESSA
+```
+
+```text
+D:\TESSA
+```
+
+```text
+E:\Herramientas\TESSA
+```
+
+---
+
+## Historial AIMT
+
+El historial ya no se almacena dentro del código.
+
+Se conserva únicamente con fines documentales.
+
+| Versión | Descripción |
+|----------|----------|
+| 1.0.0 | Script original BAT |
+| 1.1.0 | Conversión inicial a PowerShell |
+| 1.2.0 | Función Show-Block, ASCII y hostname personalizado |
+| 1.2.1 | Registro de llamadas externas |
+| 1.3.0 | Ejecución de rutinas externas |
+| 1.3.3 | Ajustes de hostname, instaladores y pausa final |
+| 1.3.4 | Actualización de instaladores |
+| 1.3.5 | Ajuste instalación Java |
+| 1.3.6 | Invocación directa de instaladores |
+| 1.3.7 | Uso de Start-Process -Wait |
+| 1.3.8 | Cambio de etiqueta del volumen C |
+| 1.3.9 | Correcciones de mensajes y logs |
+| 1.3.10 | Ajustes finales para DeepL y SupportAssist |
+
+---
+
+## Cambios Introducidos en TESSA
+
+### Actualización de Identidad
+
+Antes:
+
+```text
+Somos TSS CO. - Init (Despliegue de Aplicaciones)
+```
+
+Ahora:
+
+```text
+Somos TSS CO. | TESSA
+Tecnossystem Smart Setup Assistant
+```
+
+---
+
+### Eliminación del Historial Interno
+
+El historial deja de mantenerse dentro de los scripts.
+
+La trazabilidad se realiza mediante:
+
+- GitHub.
+- Commits.
+- Historial del repositorio.
+- Documentación técnica.
+
+---
+
+### Eliminación de Dependencia AIMT
+
+La dependencia:
+
+```text
+C:\AIMT
+```
+
+fue eliminada completamente.
+
+---
+
+### Actualización de Rutas
+
+Antes:
+
+```text
+C:\AIMT\Apps
+```
+
+Ahora:
+
+```text
+Software\Aplicaciones
+```
+
+---
+
+Antes:
+
+```text
+C:\AIMT\Componentes
+```
+
+Ahora:
+
+```text
+Software\Componentes
+```
+
+---
+
+Antes:
+
+```text
+C:\AIMT\Logs
+```
+
+Ahora:
+
+```text
+Logs
+```
+
+---
+
+## Riesgos Detectados
+
+### Dependencia de Archivos
+
+La ejecución depende de la disponibilidad de los instaladores dentro de:
+
+```text
+Software\Aplicaciones
+```
+
+---
+
+### Instalaciones Interactivas
+
+Algunos instaladores requieren interacción del usuario.
 
 Ejemplo:
 
-```powershell
-C:\AIMT\Apps
-C:\AIMT\Logs
-C:\AIMT\Componentes
+```text
+DeepL
 ```
 
 ---
 
-### Catálogo Embebido
+### Dependencia de Fabricante
 
-Las aplicaciones a instalar se encuentran definidas directamente dentro del script.
+Las herramientas:
 
-Cualquier cambio requiere modificación del código.
+```text
+Dell Command Update
+```
 
----
+y
 
-### Dependencia de Perfil
+```text
+SupportAssist
+```
 
-El módulo contiene configuraciones específicas para SIC que deben desacoplarse y trasladarse hacia el sistema de perfiles de TESSA.
-
----
-
-## Evolución AIMT → TESSA
-
-### AIMT v1.x
-
-- Script monolítico.
-- Aplicaciones definidas manualmente.
-- Configuración embebida.
-- Dependencia de rutas fijas.
-
-### TESSA v2.x
-
-Objetivos de refactorización:
-
-- Configuración basada en perfiles.
-- Eliminación de rutas fijas.
-- Catálogo de aplicaciones configurable.
-- Manejo centralizado de logs.
-- Validación de errores y resultados.
-- Mayor reutilización entre organizaciones.
+están orientadas a equipos Dell.
 
 ---
 
-## Historial Resumido
+## Mejoras Futuras
 
-| Versión AIMT | Evento |
-|-------------|---------|
-| 1.0 | Implementación original en BAT |
-| 1.1 | Migración a PowerShell |
-| 1.2 | Incorporación de hostname dinámico y logging |
-| 1.3 | Consolidación del despliegue de aplicaciones |
-| 1.3.x | Ajustes de instaladores, .NET Framework y configuraciones de sistema |
+### Prioridad Alta
+
+- Validación previa de instaladores.
+- Registro detallado de resultados.
+- Manejo avanzado de errores.
+
+---
+
+### Prioridad Media
+
+- Instalación condicional según fabricante.
+- Verificación posterior de instalación.
+- Inventario de software instalado.
+
+---
+
+### Prioridad Baja
+
+- Catálogo configurable de aplicaciones.
+- Integración con perfiles avanzados.
+- Implementación de configuraciones dinámicas.
 
 ---
 
 ## Estado de Migración
 
-**Estado actual:** Documentado.
+### AIMT
 
-**Próximo paso:** Desacoplar configuración, rutas y catálogo de aplicaciones para convertir Init en un módulo reutilizable del Core de TESSA.
+✅ Migración completada.
+
+---
+
+### TESSA
+
+✅ Módulo operativo.
+
+Versión actual:
+
+```text
+2.0.0-alpha
+```
+
+Próximas actividades:
+
+- Optimización.
+- Refactorización progresiva.
+- Validaciones avanzadas.
+
+---
+
+## Responsable
+
+```text
+Somos TSS CO.
+```
+
+Proyecto:
+
+```text
+TESSA
+Tecnossystem Smart Setup Assistant
+```

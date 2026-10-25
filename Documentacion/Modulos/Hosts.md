@@ -13,75 +13,111 @@ Módulo: Hosts
 
 ## Descripción
 
-Hosts es el módulo responsable de administrar las entradas del archivo Hosts de Windows utilizadas por las políticas definidas para cada perfil de organización.
+Hosts es el módulo encargado de administrar el archivo Hosts de Windows utilizado por el perfil SIC.
 
-Su propósito es aplicar restricciones de acceso, resoluciones locales o configuraciones de red específicas requeridas durante el proceso de alistamiento corporativo.
+Su función principal es aplicar restricciones corporativas mediante redirecciones locales hacia la dirección de loopback, bloqueando el acceso a servicios específicos desde el equipo.
 
 ---
 
-## Origen
+## Ubicación
 
-Este módulo proviene de AIMT versión 1.x, donde era utilizado para implementar políticas de restricción mediante modificaciones directas al archivo Hosts del sistema operativo.
+### Script
 
-Dentro de TESSA se convierte en un módulo reutilizable que ejecuta configuraciones definidas por cada perfil organizacional.
+```text
+TESSA
+└── Perfiles
+    └── SIC
+        └── Core
+            └── Hosts.ps1
+```
+
+### Acceso Directo
+
+```text
+TESSA
+└── Perfiles
+    └── SIC
+        └── Hosts.lnk
+```
+
+---
+
+## Estado del Módulo
+
+| Elemento | Estado |
+|----------|----------|
+| Migración a TESSA | Completa |
+| Producción | Activo |
+| Documentación | Completa |
+| Refactorización | Parcial |
+| Dependencia AIMT | Eliminada |
+
+Versión actual:
+
+```text
+2.0.0-alpha
+```
 
 ---
 
 ## Objetivos
 
-- Administrar el archivo Hosts de forma controlada.
-- Aplicar políticas corporativas de acceso.
-- Mantener configuraciones específicas por perfil.
-- Actualizar la caché DNS tras realizar cambios.
-- Permitir una administración centralizada de dominios restringidos.
+- Aplicar restricciones corporativas.
+- Gestionar el archivo Hosts.
+- Bloquear dominios definidos por SIC.
+- Actualizar la caché DNS.
+- Generar trazabilidad mediante registros.
 
 ---
 
-## Funcionalidades Identificadas en AIMT
+## Funcionalidades
 
-### Identificación del Equipo
+### Gestión del Archivo Hosts
 
-Obtiene el serial del BIOS para generar un identificador de equipo con formato:
-
-```text
-BOGXXXXXX
-```
-
-Esta información es utilizada únicamente con fines informativos durante la ejecución.
-
----
-
-### Modificación del Archivo Hosts
-
-Ubicación administrada:
+Administra el archivo:
 
 ```text
 %windir%\System32\drivers\etc\hosts
 ```
 
-Actualmente agrega entradas que redireccionan dominios hacia:
+---
+
+### Bloqueo de Dominios
+
+Redirecciona dominios hacia:
 
 ```text
 127.0.0.1
 ```
 
+con el objetivo de impedir el acceso desde el equipo.
+
 ---
 
 ### Actualización DNS
 
-Después de modificar el archivo Hosts ejecuta:
+Después de aplicar cambios ejecuta:
 
-```powershell
+```text
 ipconfig /flushdns
 ```
 
-para garantizar la aplicación inmediata de los cambios.
+para limpiar la caché DNS.
 
 ---
 
-## Restricciones Detectadas en AIMT
+### Registro de Actividades
 
-Actualmente se identifican restricciones para servicios como:
+Genera un log con:
+
+- Usuario.
+- Alias del equipo.
+- Hora de ejecución.
+- Resultado del proceso.
+
+---
+
+## Dominios Gestionados Actualmente
 
 ### Plataformas de Video
 
@@ -96,32 +132,42 @@ Actualmente se identifican restricciones para servicios como:
 - Crunchyroll
 - YouTube
 
+---
+
 ### Mensajería
 
 - WhatsApp Web
+- WhatsApp API
+- Chat WhatsApp
 
 ---
 
-## Flujo Actual
+## Flujo de Ejecución
 
 ```text
 Inicio
 │
-├── Obtener información del equipo
-├── Definir lista de dominios
-├── Actualizar archivo Hosts
-├── Limpiar caché DNS
-├── Mostrar resultado
+├── Configuración de entorno
+├── Generación de alias
+├── Inicialización de log
+│
+├── Actualización del archivo Hosts
+├── Limpieza de DNS
+│
+├── Registro de resultado
+│
 └── Finalización
 ```
 
 ---
 
-## Dependencias Detectadas
+## Dependencias
 
 ### Sistema Operativo
 
-Windows
+Windows.
+
+---
 
 ### Archivo Hosts
 
@@ -129,9 +175,122 @@ Windows
 %windir%\System32\drivers\etc\hosts
 ```
 
-### Privilegios
+---
 
-Requiere ejecución con permisos administrativos para modificar el archivo Hosts.
+### Herramientas del Sistema
+
+```text
+ipconfig.exe
+```
+
+---
+
+### PowerShell
+
+Comandos utilizados:
+
+```powershell
+Add-Content
+Get-CimInstance
+Get-Date
+Resolve-Path
+Join-Path
+Out-File
+Test-Path
+New-Item
+```
+
+---
+
+## Convención de Rutas TESSA
+
+Implementación actual:
+
+```powershell
+$TessaRoot = (Resolve-Path "$PSScriptRoot\..\..\..").Path
+```
+
+---
+
+### Logs
+
+Ubicación:
+
+```text
+TESSA\Logs
+```
+
+Ejemplo:
+
+```text
+Hosts_BOGABC123.log
+```
+
+---
+
+## Historial AIMT
+
+El historial ya no se almacena dentro del script.
+
+Se conserva únicamente como documentación.
+
+| Versión | Descripción |
+|----------|----------|
+| 1.0.0 | Script original en Batch |
+| 1.1.0 | Migración a PowerShell |
+| 1.1.1 | Ampliación de plataformas bloqueadas |
+
+---
+
+## Cambios Implementados en TESSA
+
+### Actualización de Identidad
+
+Antes:
+
+```text
+Somos TSS CO. - Rutina de Actualización de Hosts
+```
+
+Ahora:
+
+```text
+Somos TSS CO. | TESSA
+Tecnossystem Smart Setup Assistant
+```
+
+---
+
+### Eliminación de Dependencia AIMT
+
+La dependencia:
+
+```text
+C:\AIMT
+```
+
+fue eliminada completamente.
+
+---
+
+### Eliminación del Historial Interno
+
+La trazabilidad se gestiona mediante:
+
+- GitHub.
+- Commits.
+- Historial del repositorio.
+- Documentación técnica.
+
+---
+
+### Incorporación de Logs
+
+Se incorpora registro formal de ejecución dentro de:
+
+```text
+TESSA\Logs
+```
 
 ---
 
@@ -139,138 +298,77 @@ Requiere ejecución con permisos administrativos para modificar el archivo Hosts
 
 ### Duplicación de Entradas
 
-La implementación actual agrega información utilizando:
+Actualmente el script agrega registros sin validar si ya existen.
 
-```powershell
-Add-Content
-```
-
-sin verificar si los dominios ya existen.
-
-Esto puede generar múltiples registros duplicados después de ejecuciones repetidas.
-
----
-
-### Configuración Embebida
-
-La lista de dominios se encuentra codificada directamente dentro del script.
-
-Cada cambio requiere modificar el código fuente.
+Ejecuciones repetidas pueden generar entradas duplicadas.
 
 ---
 
 ### Ausencia de Respaldo
 
-Actualmente no se genera copia de seguridad del archivo Hosts antes de realizar modificaciones.
+No se realiza copia de seguridad del archivo Hosts antes de modificarlo.
 
 ---
 
-### Ausencia de Validaciones
+### Configuración Embebida
 
-No existe validación de:
-
-- Entradas existentes.
-- Formato de registros.
-- Estado previo del archivo.
+Los dominios bloqueados se encuentran definidos directamente dentro del código.
 
 ---
 
-## Evolución AIMT → TESSA
-
-### AIMT v1.x
-
-Características identificadas:
-
-- Configuración fija en código.
-- Dominios definidos manualmente.
-- Sin respaldo automático.
-- Sin control de duplicados.
-
----
-
-### TESSA v2.x
-
-Objetivos de refactorización:
-
-- Separar configuración de lógica.
-- Implementar respaldo automático.
-- Validar registros existentes.
-- Evitar duplicados.
-- Registrar cambios realizados.
-- Soportar configuraciones por perfil.
-
----
-
-## Arquitectura Objetivo
-
-La lógica permanecerá en:
-
-```text
-Core
-└── Hosts
-```
-
-Las configuraciones pasarán a:
-
-```text
-Perfiles
-└── SIC
-    └── Configuracion
-```
-
-Ejemplo:
-
-```text
-Perfiles
-└── SIC
-    └── Configuracion
-        └── Hosts.txt
-```
-
-o
-
-```text
-Perfiles
-└── SIC
-    └── Configuracion
-        └── Hosts.json
-```
-
----
-
-## Mejoras Planificadas
+## Mejoras Futuras
 
 ### Prioridad Alta
 
-- Eliminar dominios codificados en el script.
-- Validar entradas existentes.
-- Crear respaldo automático.
-- Generar registros de ejecución.
+- Validar dominios existentes.
+- Evitar duplicados.
+- Generar respaldo automático.
 
 ---
 
 ### Prioridad Media
 
-- Gestionar listas por perfil.
-- Permitir comentarios y categorías.
-- Implementar reversión de cambios.
+- Externalizar dominios bloqueados.
+- Reporte estructurado de cambios.
 
 ---
 
 ### Prioridad Baja
 
-- Interfaz de administración.
-- Catálogos centralizados de dominios.
-- Integración con futuras políticas corporativas.
+- Gestión dinámica por perfiles.
+- Listas administrables desde configuración.
 
 ---
 
 ## Estado de Migración
 
-Estado actual:
+### AIMT
 
-Documentado.
+✅ Migración completada.
 
-Pendiente:
+---
 
-Migración a modelo basado en perfiles y separación completa entre lógica y configuración.
+### TESSA
+
+✅ Módulo operativo.
+
+Versión actual:
+
+```text
+2.0.0-alpha
+```
+
+---
+
+## Responsable
+
+```text
+Somos TSS CO.
+```
+
+Proyecto:
+
+```text
+TESSA
+Tecnossystem Smart Setup Assistant
+```

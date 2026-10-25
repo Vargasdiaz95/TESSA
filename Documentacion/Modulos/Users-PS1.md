@@ -6,77 +6,111 @@
 Somos TSS CO. | TESSA
 Tecnossystem Smart Setup Assistant
 
-Módulo: Users (PowerShell)
+Módulo: Users
 ```
-
----
-
-## Estado
-
-Implementación en desarrollo.
-
-No utilizada actualmente en producción.
 
 ---
 
 ## Descripción
 
-Users.ps1 representa la evolución del módulo de creación de usuarios originalmente implementado en Batch.
+Users.ps1 representa la implementación PowerShell del módulo de administración de usuarios del perfil SIC.
 
-Su objetivo es incorporar mejores prácticas de administración, manejo de errores y futuras capacidades de automatización dentro de TESSA.
+Su objetivo es crear y configurar automáticamente la cuenta operativa estándar utilizada durante el proceso de alistamiento de equipos.
+
+Esta versión es la evolución técnica de Users.bat y constituye la base para la futura implementación definitiva del módulo dentro de TESSA.
 
 ---
 
-## Origen
+## Ubicación
 
-Migración del módulo Users.bat hacia PowerShell.
-
-Versión identificada:
+### Script
 
 ```text
-1.1.2
+TESSA
+└── Perfiles
+    └── SIC
+        └── Core
+            └── Users.ps1
 ```
 
-Fecha:
+### Acceso Directo
 
 ```text
-08/10/2026
+TESSA
+└── Perfiles
+    └── SIC
+        └── Users.lnk
 ```
 
 ---
 
-## Mejoras Con Respecto a Users.bat
+## Estado del Módulo
 
-### UTF-8
+| Elemento | Estado |
+|----------|----------|
+| Migración a TESSA | Completa |
+| Producción | Disponible |
+| Documentación | Completa |
+| Evolución futura | Activa |
+| Dependencia AIMT | Eliminada |
 
-Implementa soporte para caracteres especiales.
-
----
-
-### Información de Equipo
-
-Obtiene el serial del BIOS y genera un identificador de equipo.
-
-Ejemplo:
+Versión actual:
 
 ```text
-BOGXXXXXX
+2.0.0-alpha
 ```
 
 ---
 
-### Manejo de Errores
+## Objetivos
 
-Implementa bloque:
+- Crear el usuario operativo estándar.
+- Configurar propiedades avanzadas de la cuenta.
+- Reducir tareas manuales.
+- Generar trazabilidad mediante logs.
+- Preparar la futura evolución del módulo.
 
-```powershell
-try
-catch
+---
+
+## Funcionalidades
+
+### Creación de Usuario
+
+Actualmente crea:
+
+```text
+OperadorSIC
 ```
 
 ---
 
-### Administración Avanzada
+### Nombre Completo
+
+Configura:
+
+```text
+Operador SIC
+```
+
+---
+
+### Contraseña
+
+La contraseña es definida durante la creación de la cuenta.
+
+---
+
+### Cuenta Sin Expiración
+
+Aplica:
+
+```text
+/expires:never
+```
+
+---
+
+### Contraseña Sin Expiración
 
 Utiliza:
 
@@ -86,130 +120,298 @@ Set-LocalUser
 
 para garantizar:
 
-- Contraseña sin expiración.
-- Configuración consistente de la cuenta.
+```text
+PasswordNeverExpires
+```
 
 ---
 
-## Funcionalidades
+### Restricción de Cambio de Contraseña
 
-### Creación de Usuario
+Aplica:
 
-Usuario configurado:
+```text
+/passwordchg:no
+```
+
+---
+
+### Registro de Actividades
+
+Genera un archivo de log con:
+
+- Equipo.
+- Usuario ejecutor.
+- Fecha.
+- Resultado de ejecución.
+
+---
+
+## Flujo de Ejecución
+
+```text
+Inicio
+│
+├── Preparación del entorno
+├── Generación del alias visual
+├── Inicialización del log
+│
+├── Creación de usuario
+├── Configuración de propiedades
+├── Configuración de expiración
+├── Configuración de contraseña
+│
+├── Registro de resultado
+│
+└── Finalización
+```
+
+---
+
+## Usuario Administrado
+
+### Nombre
 
 ```text
 OperadorSIC
 ```
 
----
-
-### Configuración de Nombre Completo
+### Nombre Completo
 
 ```text
 Operador SIC
 ```
 
----
+### Configuración
 
-### Configuración de Contraseña
-
-Actualmente definida de forma estática:
-
-```text
-Sic2026*
-```
-
----
-
-### Configuración de Seguridad
-
-- Contraseña nunca expira.
-- Usuario no puede cambiar la contraseña.
-- Cuenta sin expiración.
-
----
-
-## Flujo Actual
-
-```text
-Inicio
-│
-├── Obtener serial del equipo
-├── Generar identificador
-├── Mostrar información
-├── Crear usuario
-├── Configurar propiedades
-├── Aplicar PasswordNeverExpires
-└── Finalizar
-```
+| Parámetro | Valor |
+|------------|------------|
+| Cuenta Local | Sí |
+| Expira | No |
+| Contraseña Expira | No |
+| Cambio de Contraseña | No |
 
 ---
 
 ## Dependencias
 
-### NET USER
+### Sistema Operativo
+
+Windows.
+
+---
+
+### PowerShell
+
+Comandos utilizados:
 
 ```powershell
-net user
-```
-
-### SET-LOCALUSER
-
-```powershell
+Get-CimInstance
+Get-Date
 Set-LocalUser
+Resolve-Path
+Join-Path
+Test-Path
+New-Item
+Out-File
 ```
+
+---
+
+### Herramientas del Sistema
+
+```text
+net.exe
+```
+
+---
+
+## Convención de Rutas TESSA
+
+Implementación actual:
+
+```powershell
+$TessaRoot = (Resolve-Path "$PSScriptRoot\..\..\..").Path
+```
+
+---
+
+### Logs
+
+Ubicación:
+
+```text
+TESSA\Logs
+```
+
+Ejemplo:
+
+```text
+Users_BOGABC123.log
+```
+
+---
+
+## Historial AIMT
+
+El historial deja de existir dentro del script.
+
+Se conserva únicamente en la documentación.
+
+| Versión | Descripción |
+|----------|----------|
+| 1.0.0 | Script original Batch |
+| 1.1.0 | Conversión a PowerShell |
+| 1.1.1 | Contraseña nunca expira |
+| 1.1.2 | Reemplazo de Pause por Read-Host |
+
+---
+
+## Cambios Introducidos en TESSA
+
+### Actualización de Identidad
+
+Antes:
+
+```text
+Somos TSS CO. - Rutina de Creacion de Usuario
+```
+
+Ahora:
+
+```text
+Somos TSS CO. | TESSA
+Tecnossystem Smart Setup Assistant
+```
+
+---
+
+### Incorporación de Logs
+
+El módulo ahora registra sus resultados en:
+
+```text
+TESSA\Logs
+```
+
+---
+
+### Eliminación del Historial Interno
+
+La gestión de cambios se realiza mediante:
+
+- GitHub.
+- Commits.
+- Historial del repositorio.
+- Documentación técnica.
+
+---
+
+### Eliminación de Dependencia AIMT
+
+Las referencias a AIMT fueron eliminadas completamente.
 
 ---
 
 ## Riesgos Detectados
 
-### Datos Embebidos
+### Usuario Fijo
 
-Actualmente el script contiene:
+La cuenta:
 
 ```text
 OperadorSIC
 ```
 
-```text
-Operador SIC
-```
+está definida directamente dentro del código.
 
-```text
-Sic2026*
-```
+---
 
-directamente dentro del código.
+### Contraseña Embebida
+
+La contraseña continúa definida dentro del script.
 
 ---
 
 ### Sin Validación de Existencia
 
-No valida si la cuenta ya fue creada anteriormente.
+Actualmente no se verifica si la cuenta ya existe.
 
 ---
 
-### Sin Registro de Eventos
+## Mejoras Futuras
 
-Actualmente no genera logs.
+### Prioridad Alta
+
+- Validar existencia previa.
+- Manejo avanzado de errores.
+- Registro detallado de resultados.
 
 ---
 
-## Valor para TESSA
+### Prioridad Media
 
-Esta implementación constituye la base técnica prevista para convertirse en el futuro módulo oficial:
+- Configuración parametrizable.
+- Generación automática de contraseña.
+
+---
+
+### Prioridad Baja
+
+- Administración centralizada.
+- Integración con configuraciones futuras de TESSA.
+
+---
+
+## Relación con Users.bat
+
+Actualmente existen dos implementaciones:
+
+### Producción Histórica
 
 ```text
-Core
-└── Users
+Users.bat
 ```
 
-dentro de la arquitectura TESSA.
+### Evolución Técnica
+
+```text
+Users.ps1
+```
+
+La implementación PowerShell está destinada a reemplazar definitivamente la versión Batch en futuras versiones del proyecto.
 
 ---
 
 ## Estado de Migración
 
-Documentado.
+### AIMT
 
-Pendiente de refactorización y adopción como implementación oficial del módulo Users.
+✅ Migración completada.
+
+---
+
+### TESSA
+
+✅ Módulo operativo.
+
+Versión actual:
+
+```text
+2.0.0-alpha
+```
+
+---
+
+## Responsable
+
+```text
+Somos TSS CO.
+```
+
+Proyecto:
+
+```text
+TESSA
+Tecnossystem Smart Setup Assistant
+```

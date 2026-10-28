@@ -16,6 +16,73 @@ Ejemplo:
 
 ---
 
+# [UNRELEASED]
+
+## Próxima Versión
+
+```text
+2.0.0-beta
+```
+
+Estado:
+
+```text
+Planificada
+```
+
+---
+
+## Objetivos
+
+- Validación funcional de los módulos.
+- Ejecución de pruebas operativas.
+- Validación de portabilidad.
+- Validación de logs.
+- Corrección de incidencias detectadas durante pruebas.
+- Preparación para liberación Beta.
+
+---
+
+## Calidad
+
+Pruebas definidas mediante:
+
+```text
+CASOS-PRUEBA.md
+```
+
+```text
+MATRIZ-VALIDACION-BETA.md
+```
+
+```text
+PLAN-PRUEBAS-BETA.md
+```
+
+```text
+PRUEBAS-SIMULACION.md
+```
+
+---
+
+## Resultado Esperado
+
+Promoción oficial de:
+
+```text
+TESSA v2.0.0-alpha
+```
+
+a:
+
+```text
+TESSA v2.0.0-beta
+```
+
+una vez completadas satisfactoriamente todas las pruebas funcionales.
+
+---
+
 # [2.0.0-alpha]
 
 Fecha:
@@ -57,7 +124,7 @@ C:\AIMT
 Resolve-Path
 ```
 
-- Compatibilidad con cualquier unidad de almacenamiento.
+- Compatibilidad con múltiples ubicaciones de ejecución.
 
 ---
 
@@ -69,126 +136,166 @@ Resolve-Path
 *.lnk
 ```
 
-- Implementación de:
+- Implementación*de:
 
-``*text
+```*ext
 *.cmd
 ```
 
-autoelevables medi*nte*UAC.
+autoelevables media*te UAC.
 
 ---
 
 ## Módulos
 
-### Init
-
--*Migrado a*arquitectura TESSA.
--*Implementación de logs.
-- Rutas di*ámicas.
-- Actualización documental*
+### Init*
+- Migrado a arquitectura T*SSA.
+- Implementación de logs.
+- R*tas dinámicas.
+- Actualización doc*mental.
 
 ---
 
 ### Hosts
 
-- Migrado a arqu*tectura TESSA.
-- Incorpor*ción de logs.
-- Elimin*ción de dependencias AIMT.
+- Migrado*a arquitectura TESSA.
+- Incorporac*ón de logs.
+- Eliminación de depen*encias AIMT.
 
 ---
 
-#*# Personal*zacion
+### Personaliza*ion
 
-- Migrado a arquitectura T*SSA*
-- Recursos movidos a perfil SIC*
+- Migrado a arquitectura TESS*.
+- Recursos movidos al perfil SIC*
 - Incorporación de logs.
 
 ---
 
-*## Users-BAT
+##* Users-BAT
 
-- Conservado por com*atibilidad.
-- Documentación comple*a.
-- Integr*ción con lanzador*CMD.
+- Conservado por compa*ibilidad operativa.
+- Documentació* completa.
+- Integración con lanza*or CMD.
 
 ---
 
 ### Users-PS1
 
--*Evolución inicial*completada.
-- Incorporación*de logs.
-- Preparado para futura s*stitución*del BAT.
+- Evo*ución inicial completada.
+- Incorp*ración de logs.
+- Preparado para f*tura sustitución de Users.bat.
 
----
+--*
 
-### Drivers*Lenovo
+### Drivers-Lenovo
 
-- Migrado a arquitectura T*SSA.
-- Implementación de logs.
--*Conversión a rutas dinámicas*
+- Migrado a *rquitectura TESSA.
+- Implementació* de logs.
+- Conversión a rutas din*micas.
 
 ---
 
 ## Documentación
 
-### Arqui*ectura
+###*Arquitectura
 
-*ocumentos generados:
+Documentos generados*
 
-```*ext
+```text
 Arquitectura-TESSA.md
-*apa-Migracion-AIMT-TESSA*md
+Ma*a-Migracion-AIMT-TESSA.md
+```
+
+---*
+### Módulos
+
+Documentación genera*a para:
+
+```text
+Init
+Hosts
+Person*lizacion
+Users-BAT
+Users-PS1
+Drive*s-Lenovo
 ```
 
 ---
 
-### Módulos
+### Gobierno de* Proyecto
 
-*ocumentación generada para:
+Documentos generados:
 
-```te*t
-Init
-Hosts
-Personalizacion
-Users*BAT
-Users-PS1
-Drivers-Lenovo
+*``text
+README.md
+CHANGELOG.md
+CONT*IBUTING.md
+ROADMAP.md
+LICENSE
 ```
+*---
 
-*--
+## Calidad
 
-### Gobierno Técnico
-
-Document*s generados:
+Documentación de *ruebas creada:
 
 ```text
-README*md
-CONTRIBUTING.md
-CHANGE*OG.md
+CASOS*PRUEBA.md
+```
+
+```text
+MATRIZ-*ALIDACION-BETA.md
+```
+
+```text
+PLA*-PRUE*AS-BETA.md
+```
+
+```text
+PRUEBAS*SIMULACION.md
+```
+
+---
+
+## Lic*nciamiento
+
+- Migración desde lice*cia MIT.
+- Implementación*de:
+
+```text
+Tecnossystem Internal*Use License *TIUL) v1.0
 ```
 
 ---
 
 ## Estado
 
-*``text
+Ve*sión:
+
+```text
 TESSA v2.*.0-alpha
 ```
 
-Estado de*migración:
+Migración:
 
-```text
-Completada
-*``
-
-Estado de documentación*
-
-```text
+*``text
 Completada
 ```
 
-*róxima versión:
+Documentaci*n:
+
+```text*Completada
+```
+
+Arquitectura:
 
 ```*ext
-2.0.0-beta*```
+Com*letada
+```
+
+Próxima versión:
+
+```*ext
+2.0.0-beta
+```

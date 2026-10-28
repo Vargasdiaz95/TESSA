@@ -4,15 +4,17 @@
 
 Este documento define la estrategia de evolución desde AIMT (Asistente de Instalación y Mejoras Tecnossystem) hacia TESSA (Tecnossystem Smart Setup Assistant).
 
-Su objetivo es preservar la funcionalidad existente mientras se transforma la solución en una plataforma modular, reutilizable y escalable.
+Su objetivo es preservar la funcionalidad existente mientras se transforma la solución en una plataforma portable, modular, documentada y mantenible.
+
+Asimismo, documenta el estado real de la migración ejecutada, las decisiones arquitectónicas adoptadas y las actividades pendientes para futuras versiones.
 
 ---
 
-# Estado Actual
+# Estado Histórico
 
 ## AIMT v1.x
 
-Arquitectura actual:
+Arquitectura original:
 
 ```text
 C:\AIMT
@@ -36,42 +38,83 @@ Personalizacion.ps1
 Drivers-Lenovo.ps1
 ```
 
+Características principales:
+
+- Dependencia de rutas absolutas.
+- Uso de accesos directos LNK.
+- Configuración embebida en los scripts.
+- Estructura monolítica.
+- Documentación limitada.
+
 ---
 
-# Estado Objetivo
+# Estado Actual
 
-## TESSA v2.x
+## TESSA v2.0.0-alpha
 
-Arquitectura objetivo:
+Arquitectura vigente:
 
 ```text
 TESSA
 │
-├── Core
-│   ├── Init
-│   ├── Hosts
-│   ├── Users
-│   ├── Drivers-Lenovo
-│   ├── Personalizacion
-│   ├── Inventario
-│   └── Utilidades
-│
 ├── Perfiles
 │   └── SIC
-│       ├── Configuracion
-│       ├── Aplicaciones
-│       ├── Controladores
-│       ├── FondosPantalla
-│       └── Inventario
+│       │
+│       ├── Core
+│       │   ├── Init.ps1
+│       │   ├── Hosts.ps1
+│       │   ├── Personalizacion.ps1
+│       │   ├── Users.ps1
+│       │   └── Users.bat
+│       │
+│       ├── Init.cmd
+│       ├── Hosts.cmd
+│       ├── Personalizacion.cmd
+│       ├── Users.cmd
+│       ├── Users_Bat.cmd
+│       │
+│       └── Wallpapers
 │
-├── Recursos
+├── Controladores
+│   │
+│   ├── Core
+│   │   └── Drivers-Lenovo.ps1
+│   │
+│   ├── Drivers-Lenovo.cmd
+│   │
+│   ├── Lenovo
+│   └── Dell
+│
+├── Software
+│   ├── Aplicaciones
+│   └── Componentes
+│       └── .NetFx3.5
 │
 ├── Logs
-│
 ├── Documentacion
+├── Pruebas
 │
-└── Pruebas
+├── README.md
+├── CONTRIBUTING.md
+├── LICENSE
+└── .gitignore
 ```
+
+Estado general:
+
+✅ Migración de código completada.
+
+✅ Documentación de módulos completada.
+
+✅ Eliminación de dependencias AIMT.
+
+✅ Implementación de rutas dinámicas.
+
+✅ Implementación de logs.
+
+✅ Implementación de lanzadores CMD autoelevables.
+
+✅ Portabilidad completa del proyecto.
 
 ---
 
@@ -79,408 +122,521 @@ TESSA
 
 ## 1. Preservar Operación
 
-Durante la migración ningún proceso actualmente funcional deberá perder capacidades o comportamientos previstos.
+Ninguna funcionalidad operativa de AIMT debía perderse durante la migración.
+
+Objetivo:
+
+```text
+Misma funcionalidad
++
+Mejor arquitectura
+```
 
 ---
 
 ## 2. Mantener Nombres Funcionales
 
-Los módulos conservarán sus nombres históricos:
+Los módulos conservan sus nombres históricos:
 
 ```text
 Init
 Hosts
 Users
-Drivers-Lenovo
 Personalizacion
+Drivers-Lenovo
 ```
 
-Esto facilita la trazabilidad entre AIMT y TESSA.
+Esto facilita:
+
+- Trazabilidad.
+- Capacitación.
+- Soporte.
+- Continuidad operativa.
 
 ---
 
-## 3. Separar Lógica y Configuración
+## 3. Portabilidad Total
 
-La lógica permanecerá dentro de Core.
+Uno de los objetivos principales de TESSA fue eliminar completamente las rutas absolutas.
 
-La configuración se trasladará a Perfiles.
-
----
-
-## 4. Eliminar Dependencias de AIMT
-
-TESSA no conservará dependencias directas a:
+Antes:
 
 ```text
 C:\AIMT
 ```
 
-Todas las rutas deberán generarse dinámicamente.
+Ahora:
+
+```powershell
+$TessaRoot = (Resolve-Path "...").Path
+```
+
+Resultado:
+
+```text
+C:\TESSA
+```
+
+```text
+D:\TESSA
+```
+
+```text
+E:\Herramientas\TESSA
+```
+
+```text
+F:\USB\TESSA
+```
+
+funcionan de forma idéntica.
 
 ---
 
-# Inventario de Módulos
+## 4. Eliminación de Dependencias AIMT
 
+Se eliminaron referencias directas a:
+
+```text
+C:\AIMT
+```
+
+de todos los módulos migrados.
+
+---
+
+## 5. Sustitución de Accesos Directos
+
+Se reemplazaron:
+
+```text
+*.lnk*```
+
+por:
+
+```text
+*.cmd*```
+
+autoelevables.
+
+Benef*cios:
+
+- Portabilidad.
+- Compatibi*idad con*Git.
+- Facilidad de mantenimiento.*- Eliminación de dependencias de*ubicación.
+
+---
+
+# Inventario de M*dulos*
 ## Init
 
 Estado:
 
-Documentado
+```text
+Migr*do
+```
 
 Responsabilidades:
 
-- Instalación de aplicaciones.
-- Configuración inicial del sistema.
-- Renombrado del equipo.
-- Instalación de componentes.
+* Instalación de aplicaciones.
+- Ha*ilitación de .NET Framework 3.5.
+-*Renombrado del equipo.
+- Etiquetad* de unidad.
+- Configuración inicia*.
 
-Migración:
+Estado actual:
 
-```text
-Dev\Init.ps1
-↓
-Core\Init
-```
+✅ Operativo.
 
-Estado:
+✅*Documentado.
 
-Pendiente de refactorización.
+✅*Portable.
 
 ---
 
 ## Hosts
 
-Estado:
-
-Documentado
-
-Responsabilidades:
-
-- Modificación del archivo Hosts.
-- Implementación de restricciones corporativas.
-- Actualización de caché DNS.
-
-Migración:
+*stado:
 
 ```text
-Dev\Hosts.ps1
-↓
-Core\Hosts
+Migrado
 ```
+
+*esponsabilidades:
+
+- Gestión del a*chivo Hosts.
+- Restricciones corpo*ativas.
+-*Actualización de*caché DNS.
+
+Estado actual:
+
+✅ Oper*tivo.
+
+✅ Documentado.
+
+✅ Portable.*
+---
+
+##*Personalizacion
 
 Estado:
 
-Pendiente de desacoplamiento de configuraciones.
+```*ext
+Migrado
+```
+
+Responsabilidades*
+
+- Fondos corporativos.
+- Configu*ación de perfiles existentes.
+- Co*figuración de*nuevos usuarios.
+- Ajustes de expe*iencia de usuario.
+
+Estado actual:*
+✅ Operativo.
+
+✅ Documentado.
+
+✅ P*rtable.
 
 ---
 
-## Users (BAT)
+## Users (BAT*
 
 Estado:
 
-Documentado
+```text
+Migrado
+``*
 
 Responsabilidades:
 
-- Creación de usuario OperadorSIC.
+- Creación d*l usuario OperadorSIC.
 
-Migración:
+Estado act*al:
 
-```text
-Users.bat
-↓
-Histórico
-```
+✅ Operativo.
 
-Estado:
+✅ Documentado.
+*✅ Conservado por compatibilidad.
 
-Producción.
-
----
+*--
 
 ## Users (PowerShell)
 
-Estado:
-
-Documentado
+Estado:*
+```text
+Migrado
+*``
 
 Responsabilidades:
 
-- Evolución técnica del módulo Users.
-- Base para futura implementación TESSA.
+- Evolució* del módulo Users.
+- Configuración*avanzada de cuentas locales.
+- Gen*ración de logs.
 
-Migración:
+Estado actual:
 
-```text
-Users.ps1
-↓
-Core\Users
-```
+✅*Operativo.
 
-Estado:
+✅ Documentado.
 
-Pendiente de desarrollo.
+✅ Base*para evolución futura.
 
 ---
 
-## Personalizacion
+## Dr*vers-Lenovo
 
 Estado:
 
-Documentado
+```text
+Migr*do
+```
 
 Responsabilidades:
 
-- Fondo corporativo.
-- Configuración de experiencia de usuario.
-- Configuración de perfiles locales.
+- Inst*lación automática de controladores*Lenovo.
+- Procesamiento de archivo* INF.
+- Generación de registros.
 
-Migración:
+*stado actual:
 
-```text
-Dev\Personalizacion.ps1
-↓
-Core\Personalizacion
-```
+✅ Operativo.
 
-Estado:
+✅ Doc*mentado.
 
-Pendiente de desacoplamiento de recursos SIC.
+✅ Portable.
 
 ---
 
-## Drivers-Lenovo
-
-Estado:
-
-Documentado
-
-Responsabilidades:
-
-- Instalación automática de controladores Lenovo.
-
-Migración:
-
-```text
-Dev\Drivers-Lenovo.ps1
-↓
-Core\Drivers-Lenovo
-```
-
-Estado:
-
-Pendiente de separación entre lógica y repositorio de controladores.
-
----
-
-# Dependencias Identificadas
+# Depe*dencias Migradas
 
 ## Aplicaciones
-
-Actualmente:
+*Antes:
 
 ```text
 C:\AIMT\Apps
 ```
 
-Destino:
+*hora:
 
 ```text
-Perfiles\SIC\Aplicaciones
-```
-
----
-
-## Fondos Corporativos
-
-Actualmente:
-
-```text
-C:\AIMT\Wallpapers
-```
-
-Destino:
-
-```text
-Perfiles\SIC\FondosPantalla
-```
-
----
-
-## Controladores
-
-Actualmente:
-
-```text
-C:\AIMT\Controladores
-```
-
-Destino:
-
-```text
-Perfiles\SIC\Controladores
+TESSA\Software\Apli*aciones
 ```
 
 ---
 
 ## Componentes
 
-Actualmente:
+*ntes:
 
 ```text
-C:\AIMT\Componentes
-```
+C:\AIMT\Componentes*```
 
-Destino:
+Ahora:
 
 ```text
-Recursos\Componentes
+TESSA\Softwar*\Componentes
 ```
 
 ---
 
-# Hallazgos Técnicos
+## Fondos C*rporativos
 
-Durante la documentación se identificaron patrones comunes:
+Antes:
 
-## Rutas Fijas
+```text
+C:\AIM*\Wallpapers
+```
+
+Ahora:
+
+```text
+T*SSA\Perfiles\SIC\Wallpapers
+```
+
+-*-
+
+## Logs
+
+Antes:
+
+```text
+C:\AIM*\Logs
+```
+
+Ahora:
+
+```text
+TESSA\L*gs
+```
+
+---
+
+## Controladores
+
+Ant*s:
+
+```text
+C:\AIMT\Controladores
+*``
+
+Ahora:
+
+```text
+TESSA\Controla*ores
+```
+
+---
+
+# Hallazgos Técnico*
+
+Durante la migración se identifi*aron los siguientes patrones.
+
+## *onfiguración Embebida
+
+Persisten c*nfiguraciones definidas dentro del*código:
+
+- Hosts.
+- Users.
+- Perso*alizacion.
+- Init.
+
+---
+
+## Usuari*s y Credenciales Fijas
+
+Presente e*:
+
+```text
+Users.bat
+Users.ps1
+```*
+---
+
+## Dependencias por Perfil
+
+*resente en:
+
+```text
+SIC
+```
+
+Los *ódulos:
+
+- Hosts.
+- Personalizacio*.
+- Users.
+
+mantienen elementos es*ecíficos del perfil SIC.
+
+---
+
+## *epositorios Dependientes de Recurs*s
 
 Presente en:
 
-- Init
-- Drivers-Lenovo
-- Personalizacion
+- Software.
+- Wal*papers.
+- Controladores.
 
 ---
 
-## Configuración Embebida
+# P*an de Evolución
 
-Presente en:
-
-- Init
-- Hosts
-- Users
-- Personalizacion
-
----
-
-## Dependencia SIC
-
-Presente en:
-
-- Users
-- Personalizacion
-- Hosts
-
----
-
-## Ausencia de Configuración Centralizada
-
-Actualmente los parámetros operativos se encuentran distribuidos dentro de los scripts.
-
----
-
-# Plan de Refactorización
-
-## Fase 1
-
-Documentación
+## Fase 1 – Docum*ntación
 
 Estado:
 
-✅ Completada
+```text
+Completada
+```
 
 Módulos documentados:
 
 - Init
 - Hosts
+- Personalizacion
 - Users-BAT
 - Users-PS1
-- Personalizacion
 - Drivers-Lenovo
 
 ---
 
-## Fase 2
-
-Separación de Configuración
-
-Objetivos:
-
-- Crear estructura Perfiles\SIC.
-- Extraer configuraciones embebidas.
-- Definir archivos de configuración.
+## Fase 2 – Migración Arquitectónica
 
 Estado:
 
-Pendiente.
+```text
+Completada
+```
+
+Actividades realizadas:
+
+- Eliminación de AIMT.
+- Migración a TESSA.
+- Implementación de rutas dinámicas.
+- Organización por perfiles.
+- Organización de controladores.
 
 ---
 
-## Fase 3
-
-Construcción del Core
-
-Objetivos:
-
-- Migración progresiva de módulos.
-- Eliminación de rutas AIMT.
-- Estandarización de logs.
+## Fase 3 – Portabilidad
 
 Estado:
 
-Pendiente.
+```text
+Completada
+```
+
+Actividades realizadas:
+
+- Eliminación de rutas absolutas.
+- Sustitución de accesos directos.
+- Creación de lanzadores CMD.
+- Autoelevación mediante UAC.
 
 ---
 
-## Fase 4
+## Fase 4 – Refactorización
 
-Orquestación
+Estado:
+
+```text
+Pendiente
+```
 
 Objetivos:
 
-Creación del lanzador principal:
+- Externalizar configuraciones.
+- Reducir código duplicado.
+- Parametrizar variables.
+- Mejorar validaciones.
+
+---
+
+## Fase 5 – Orquestación
+
+Estado:
+
+```text
+Pendiente
+```
+
+Objetivos:
+
+Crear un lanzador centralizado:
 
 ```text
 Start-TESSA.ps1
 ```
 
-Estado:
-
-Pendiente.
+capaz de ejecutar módulos y perfiles desde una única interfaz.
 
 ---
 
-## Fase 5
-
-Versión Oficial
+## Fase 6 – Versión Estable
 
 Objetivo:
-
-Liberación de:
 
 ```text
 TESSA v2.0.0
 ```
 
-como sucesor oficial de AIMT.
+como sucesor operativo definitivo de AIMT.
 
 ---
 
 # Identidad del Proyecto
+
+## Identidad Operativa
+
+Utilizada en:
+
+- Consola.
+- Logs.
+- Scripts.
+- Lanzadores.
 
 ```text
 Somos TSS CO. | TESSA
 Tecnossystem Smart Setup Assistant
 ```
 
-Esta identidad deberá utilizarse en:
+---
 
-- Consola.
-- Logs.
+## Identidad Institucional
+
+Utilizada en:
+
 - Documentación.
-- Scripts.
-- Interfaces futuras.
+- GitHub.
+- Manuales.
+- Arquitectura.
+
+```text
+Tecnossystem Co.
+```
 
 ---
 
@@ -496,12 +652,49 @@ Arquitectura:
 
 Migración de Código:
 
-⏳ Pendiente
+✅ Completada
+
+Migración de Rutas:
+
+✅ Completada
+
+Portabilidad:
+
+✅ Completada
+
+Implementación de Logs:
+
+✅ Completada
+
+Lanzadores CMD:
+
+✅ Completados
 
 Refactorización:
 
 ⏳ Pendiente
 
-TESSA v2.0:
+TESSA v2.0.0:
 
-⏳ En construcción
+⏳ En evolución
+
+---
+
+## Responsable
+
+```text
+Fabian R. Vargas
+```
+
+Organización:
+
+```text
+Tecnossystem Co.
+```
+
+Proyecto:
+
+```text
+TESSA
+Tecnossystem Smart Setup Assistant
+```

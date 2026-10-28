@@ -17,13 +17,13 @@ Users.ps1 representa la implementación PowerShell del módulo de administració
 
 Su objetivo es crear y configurar automáticamente la cuenta operativa estándar utilizada durante el proceso de alistamiento de equipos.
 
-Esta versión es la evolución técnica de Users.bat y constituye la base para la futura implementación definitiva del módulo dentro de TESSA.
+Esta versión constituye la evolución técnica de Users.bat y representa la base sobre la cual se construirá la implementación definitiva del módulo dentro de TESSA.
 
 ---
 
 ## Ubicación
 
-### Script
+### Motor del Módulo
 
 ```text
 TESSA
@@ -33,14 +33,54 @@ TESSA
             └── Users.ps1
 ```
 
-### Acceso Directo
+### Lanzador
 
 ```text
 TESSA
 └── Perfiles
     └── SIC
-        └── Users.lnk
+        └── Users.cmd
 ```
+
+---
+
+## Método de Ejecución
+
+El módulo se ejecuta mediante un lanzador CMD portable.
+
+Archivo utilizado:
+
+```text
+Users.cmd
+```
+
+El lanzador proporciona:
+
+- Elevación automática a administrador mediante UAC.
+- Ejecución de PowerShell con ExecutionPolicy Bypass.
+- Compatibilidad con cualquier ubicación del proyecto.
+- Resolución automática de rutas relativas.
+- Independencia de rutas absolutas.
+
+Ejemplos válidos:
+
+```text
+C:\TESSA
+```
+
+```text
+D:\TESSA
+```
+
+```text
+E:\Herramientas\TESSA
+```
+
+```text
+F:\USB\TESSA
+```
+
+La ejecución no requiere modificaciones siempre que se conserve la estructura interna de TESSA.
 
 ---
 
@@ -49,7 +89,7 @@ TESSA
 | Elemento | Estado |
 |----------|----------|
 | Migración a TESSA | Completa |
-| Producción | Disponible |
+| Producción | Operativo |
 | Documentación | Completa |
 | Evolución futura | Activa |
 | Dependencia AIMT | Eliminada |
@@ -68,7 +108,7 @@ Versión actual:
 - Configurar propiedades avanzadas de la cuenta.
 - Reducir tareas manuales.
 - Generar trazabilidad mediante logs.
-- Preparar la futura evolución del módulo.
+- Preparar la evolución futura del módulo.
 
 ---
 
@@ -92,11 +132,13 @@ Configura:
 Operador SIC
 ```
 
+como nombre descriptivo de la cuenta.
+
 ---
 
 ### Contraseña
 
-La contraseña es definida durante la creación de la cuenta.
+La contraseña es definida durante la creación inicial del usuario.
 
 ---
 
@@ -107,6 +149,8 @@ Aplica:
 ```text
 /expires:never
 ```
+
+para garantizar que la cuenta no expire automáticamente.
 
 ---
 
@@ -134,16 +178,18 @@ Aplica:
 /passwordchg:no
 ```
 
+impidiendo que el usuario modifique su contraseña.
+
 ---
 
 ### Registro de Actividades
 
 Genera un archivo de log con:
 
-- Equipo.
+- Equipo procesado.
 - Usuario ejecutor.
-- Fecha.
-- Resultado de ejecución.
+- Fecha y hora de ejecución.
+- Resultado del proceso.
 
 ---
 
@@ -157,9 +203,10 @@ Inicio
 ├── Inicialización del log
 │
 ├── Creación de usuario
-├── Configuración de propiedades
+├── Configuración de nombre completo
 ├── Configuración de expiración
 ├── Configuración de contraseña
+├── Configuración avanzada de la cuenta
 │
 ├── Registro de resultado
 │
@@ -228,15 +275,48 @@ net.exe
 
 ## Convención de Rutas TESSA
 
+Las rutas se generan dinámicamente a partir de la ubicación del script.
+
 Implementación actual:
 
 ```powershell
 $TessaRoot = (Resolve-Path "$PSScriptRoot\..\..\..").Path
 ```
 
+Resultado:
+
+```text
+TESSA
+```
+
 ---
 
-### Logs
+### Ventajas
+
+- Eliminación de dependencias de AIMT.
+- Portabilidad total.
+- Compatibilidad con cualquier ubicación del proyecto.
+- Facilidad de despliegue.
+
+Ejemplos válidos:
+
+```text
+C:\TESSA
+```
+
+```text
+D:\TESSA
+```
+
+```text
+E:\Herramientas\TESSA
+```
+
+Siempre que la estructura interna permanezca intacta.
+
+---
+
+## Logs
 
 Ubicación:
 
@@ -288,7 +368,7 @@ Tecnossystem Smart Setup Assistant
 
 ### Incorporación de Logs
 
-El módulo ahora registra sus resultados en:
+El módulo registra sus resultados en:
 
 ```text
 TESSA\Logs
@@ -313,73 +393,100 @@ Las referencias a AIMT fueron eliminadas completamente.
 
 ---
 
-## Riesgos Detectados
+### Sustitución de Accesos Directos
 
-### Usuario Fijo
+Los accesos directos tradicionales:
+
+```text
+*.lnk
+```
+
+fueron reempla*ados por lanzadores:
+
+```text
+*.cm*
+```
+
+Beneficios:
+
+- Compatibilida* con Git.
+- Portabilidad.
+- Facili*ad de mantenimiento.
+- Eliminación*de rutas absolutas.
+- Elevación au*omática a administrador.
+
+---
+
+## *iesgos Detectados
+
+### Usuario Fij*
 
 La cuenta:
 
 ```text
 OperadorSIC
-```
+*``
 
-está definida directamente dentro del código.
-
----
-
-### Contraseña Embebida
-
-La contraseña continúa definida dentro del script.
+está definida directamente den*ro del código.
 
 ---
 
-### Sin Validación de Existencia
+### Contraseñ* Embebida
 
-Actualmente no se verifica si la cuenta ya existe.
+La contraseña continúa *efinida dentro del script.
+
+---
+
+#*# Sin Validación de Existencia
+
+Ac*ualmente no se verifica si la cuen*a ya existe antes de intentar crea*la.
 
 ---
 
 ## Mejoras Futuras
 
-### Prioridad Alta
+### *rioridad Alta
 
-- Validar existencia previa.
-- Manejo avanzado de errores.
-- Registro detallado de resultados.
+- Validar existenci* previa.
+- Manejo avanzado de erro*es.
+- Registro detallado de result*dos.
 
 ---
 
 ### Prioridad Media
 
-- Configuración parametrizable.
-- Generación automática de contraseña.
+- *onfiguración parametrizable.
+- Gen*ración automática de contraseña.
+-*Configuración externa de credencia*es.
 
 ---
 
 ### Prioridad Baja
 
-- Administración centralizada.
-- Integración con configuraciones futuras de TESSA.
+- Ad*inistración centralizada.
+- Integr*ción con futuras configuraciones d* TESSA.
 
 ---
 
-## Relación con Users.bat
+## Relación con User*.bat
 
-Actualmente existen dos implementaciones:
+Actualmente existen dos impl*mentaciones del módulo.
 
-### Producción Histórica
+### Imple*entación Histórica
 
 ```text
-Users.bat
+Users.*at
 ```
 
-### Evolución Técnica
+---
+
+### Implementación Ev*lutiva
 
 ```text
 Users.ps1
 ```
 
-La implementación PowerShell está destinada a reemplazar definitivamente la versión Batch en futuras versiones del proyecto.
+La implementación PowerShell está destinada a convertirse en el reemplazo definitivo de la versión Batch en futuras versiones de TESSA.
 
 ---
 
@@ -387,7 +494,7 @@ La implementación PowerShell está destinada a reemplazar definitivamente la ve
 
 ### AIMT
 
-✅ Migración completada.
+✅ Funcionalidad migrada a TESSA.
 
 ---
 
@@ -395,18 +502,38 @@ La implementación PowerShell está destinada a reemplazar definitivamente la ve
 
 ✅ Módulo operativo.
 
+✅ Logs implementados.
+
+✅ Lanzador CMD portable implementado.
+
+✅ Compatible con cualquier ubicación del proyecto.
+
+✅ Preparado para evolución futura.
+
 Versión actual:
 
 ```text
 2.0.0-alpha
 ```
 
+Próximas actividades:
+
+- Consolidación funcional.
+- Mejora de validaciones.
+- Sustitución progresiva de Users.bat.
+
 ---
 
 ## Responsable
 
 ```text
-Somos TSS CO.
+Fabian R. Vargas
+```
+
+Organización:
+
+```text
+Tecnossystem Co.
 ```
 
 Proyecto:

@@ -1,21 +1,125 @@
-MIT License
+Tecnossystem Internal Use License (TIUL) v1.0
 
-Copyright (c) 2026 Vargasdiaz95
+Copyright (c) 2026
+Fabian R. Vargas
+Tecnossystem Co.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Todos los derechos reservados.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+-------------------------------------------------------------------------------
+1. PROPIEDAD INTELECTUAL
+-------------------------------------------------------------------------------
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+TESSA (Tecnossystem Smart Setup Assistant), incluyendo su código fuente,
+scripts, documentación, recursos, configuraciones, estructura de proyecto,
+material de soporte y componentes asociados, es propiedad de:
+
+Fabian R. Vargas
+Tecnossystem Co.
+
+Todos los derechos de propiedad intelectual quedan expresamente reservados.
+
+-------------------------------------------------------------------------------
+2. USO AUTORIZADO
+-------------------------------------------------------------------------------
+
+El software TESSA ha sido desarrollado exclusivamente para uso interno de
+Tecnossystem Co. y para las actividades técnicas autorizadas por la
+organización.
+
+Se permite:
+
+- Ejecutar el software dentro de entornos autorizados.
+- Realizar mantenimiento interno.
+- Adaptar configuraciones para necesidades operativas de la organización.
+- Generar documentación derivada para uso interno.
+
+-------------------------------------------------------------------------------
+3. RESTRICCIONES
+-------------------------------------------------------------------------------
+
+Sin autorización expresa y por escrito del propietario, no está permitido:
+
+- Distribuir el software a terceros.
+- Publicar el código fuente.
+- Comercializar el software.
+- Revender el software.
+- Transferir derechos sobre el software.
+- Utilizar el software fuera de entornos autorizados.
+- Eliminar o modificar avisos de propiedad intelectual.
+
+-------------------------------------------------------------------------------
+4. MODIFICACIONES
+-------------------------------------------------------------------------------
+
+Las modificaciones internas del código están permitidas únicamente para fines
+operativos, correctivos o evolutivos relacionados con TESSA.
+
+Toda modificación deberá:
+
+- Mantener la documentación actualizada.
+- Registrar cambios en CHANGELOG.md.
+- Mantener la atribución original del proyecto.
+
+-------------------------------------------------------------------------------
+5. AUSENCIA DE GARANTÍA
+-------------------------------------------------------------------------------
+
+Este software se proporciona "tal cual".
+
+No se ofrecen garantías expresas ni implícitas sobre:
+
+- Disponibilidad.
+- Compatibilidad.
+- Funcionamiento ininterrumpido.
+- Adecuación para propósitos específicos.
+
+El uso del software es responsabilidad de la organización autorizada.
+
+-------------------------------------------------------------------------------
+6. LIMITACIÓN DE RESPONSABILIDAD
+-------------------------------------------------------------------------------
+
+En ningún caso el autor o Tecnossystem Co. serán responsables por daños
+directos, indirectos, incidentales o consecuentes derivados del uso de este
+software.
+
+-------------------------------------------------------------------------------
+7. TERMINACIÓN
+-------------------------------------------------------------------------------
+
+El incumplimiento de cualquiera de las condiciones establecidas en esta licencia
+implica la revocación inmediata de la autorización de uso.
+
+-------------------------------------------------------------------------------
+8. IDENTIDAD DEL PROYECTO
+-------------------------------------------------------------------------------
+
+Nombre del Proyecto:
+
+TESSA
+Tecnossystem Smart Setup Assistant
+
+Identidad Operativa:
+
+Somos TSS CO. | TESSA
+
+-------------------------------------------------------------------------------
+9. INFORMACIÓN DEL PROPIETARIO
+-------------------------------------------------------------------------------
+
+Propietario:
+
+Fabian R. Vargas
+
+Organización:
+
+Tecnossystem Co.
+
+Versión de Licencia:
+
+Tecnossystem Internal Use License (TIUL) v1.0
+
+Año:
+
+2026

@@ -17,13 +17,13 @@ Users.bat es la implementación original del módulo de creación de usuarios he
 
 Su propósito es crear una cuenta local estándar utilizada durante el proceso de alistamiento de equipos del perfil SIC.
 
-Actualmente se conserva por razones de compatibilidad y operación mientras continúa la evolución del módulo Users.ps1.
+Actualmente se conserva por razones de compatibilidad, continuidad operativa y referencia histórica mientras continúa la evolución del módulo Users.ps1.
 
 ---
 
 ## Ubicación
 
-### Script
+### Motor del Módulo
 
 ```text
 TESSA
@@ -33,14 +33,53 @@ TESSA
             └── Users.bat
 ```
 
-### Acceso Directo
+### Lanzador
 
 ```text
 TESSA
 └── Perfiles
     └── SIC
-        └── Users_Bat.lnk
+        └── Users_Bat.cmd
 ```
+
+---
+
+## Método de Ejecución
+
+El módulo se ejecuta mediante un lanzador CMD portable.
+
+Archivo utilizado:
+
+```text
+Users_Bat.cmd
+```
+
+El lanzador proporciona:
+
+- Elevación automática a administrador mediante UAC.
+- Compatibilidad con cualquier ubicación del proyecto.
+- Resolución automática de rutas relativas.
+- Independencia de rutas absolutas.
+
+Ejemplos válidos:
+
+```text
+C:\TESSA
+```
+
+```text
+D:\TESSA
+```
+
+```text
+E:\Herramientas\TESSA
+```
+
+```text
+F:\USB\TESSA
+```
+
+La ejecución no requiere modificaciones siempre que se conserve la estructura interna de TESSA.
 
 ---
 
@@ -49,7 +88,7 @@ TESSA
 | Elemento | Estado |
 |----------|----------|
 | Migración a TESSA | Completa |
-| Producción | Activo |
+| Producción | Operativo |
 | Documentación | Completa |
 | Sustitución futura | Pendiente |
 | Dependencia AIMT | Eliminada |
@@ -100,7 +139,7 @@ como nombre descriptivo de la cuenta.
 Aplica:
 
 ```text
-/exists:never
+/expires:never
 ```
 
 mediante:
@@ -132,7 +171,7 @@ Inicio
 ├── Crear usuario
 ├── Configurar nombre completo
 ├── Configurar expiración
-├── Configurar restricciones
+├── Configurar restricción de contraseña
 │
 └── Finalización
 ```
@@ -160,10 +199,10 @@ Operador SIC
 ### Configuración
 
 | Parámetro | Valor |
-|------------|------------|
-| Expira | No |
-| Cambio Contraseña | No |
+|-----------|-----------|
 | Cuenta Local | Sí |
+| Expira | No |
+| Cambio de Contraseña | No |
 
 ---
 
@@ -199,7 +238,7 @@ pause
 
 El historial ya no se almacena dentro del archivo BAT.
 
-Se conserva mediante documentación.
+Se conserva únicamente mediante documentación.
 
 | Versión | Descripción |
 |----------|----------|
@@ -239,114 +278,152 @@ La trazabilidad se realiza mediante:
 
 ---
 
-### Conservación Operativa
+### Sustitución de Accesos Directos
 
-La funcionalidad original se mantiene sin cambios.
+Los accesos directos tradicionales:
+
+```text
+*.lnk
+```
+
+fueron reemplazados por*lanzadores:
+
+```text
+*.cmd
+``*
+
+Beneficios:
+
+- Compatibilidad co* Git.
+- Portabilidad.
+- Facilidad *e mantenimiento.
+- Eliminación de *utas absolutas.
+- Elevación automá*ica a administrador.
 
 ---
 
-## Riesgos Detectados
+### Con*ervación Operativa
+
+La funcionalid*d original se mantiene sin cambios*respecto a AIMT.
+
+---
+
+## Riesgos *etectados
 
 ### Usuario Fijo
 
-La cuenta:
+La cu*nta:
 
 ```text
 OperadorSIC
 ```
 
-se encuentra definida directamente dentro del script.
+se *ncuentra definida directamente den*ro del script.
 
 ---
 
-### Contraseña Fija
+### Contraseñ* Fija
 
-La contraseña se encuentra almacenada dentro del código.
+La contraseña se encuentra *lmacenada dentro del código.
+
+---
+*### Sin Validación Previa
+
+No veri*ica si el usuario ya existe antes *e intentar crearlo.
 
 ---
 
-### Sin Validación Previa
+### Sin *anejo de Errores
 
-No verifica si el usuario ya existe antes de crearlo.
-
----
-
-### Sin Manejo de Errores
-
-No existen validaciones o captura de errores durante la ejecución.
+No existen valid*ciones ni captura de errores duran*e la ejecución.
 
 ---
 
-## Mejoras Futuras
+## Mejoras F*turas
 
 ### Prioridad Alta
 
-- Validación de existencia previa.
-- Manejo de errores.
-- Registro de actividades.
+- Valid*ción de existencia previa.
+- Manej* de errores.
+- Registro de activid*des.
 
 ---
 
 ### Prioridad Media
 
-- Configuración parametrizable.
-- Definición de usuario mediante variables.
+- *onfiguración parametrizable.
+- Def*nición de usuarios mediante variab*es.
+- Configuración externa de cre*enciales.
 
 ---
 
-### Prioridad Baja
-
-- Sustitución completa por Users.ps1.
-- Administración mediante configuración centralizada.
+### Prioridad Baja*
+- Sustitución completa por Users.*s1.
+- Administración mediante conf*guración centralizada.
 
 ---
 
-## Relación con Users.ps1
+## Re*ación con Users.ps1
 
-Actualmente existen dos implementaciones del módulo:
+Actualmente e*isten dos implementaciones del mód*lo.
 
-### Producción
-
-```text
+### Implementación Histórica
+*```text
 Users.bat
 ```
 
 ---
 
-### Evolución
+### Im*lementación Evolutiva
 
 ```text
-Users.ps1
+Use*s.ps1
 ```
 
-La implementación PowerShell está destinada a convertirse en el reemplazo definitivo del archivo BAT en futuras versiones de TESSA.
+La implementación Power*hell está destinada a convertirse *n el reemplazo definitivo del arch*vo BAT en futuras versiones de TES*A.
 
 ---
 
 ## Estado de Migración
 
-### AIMT
+#*# AIMT
 
-✅ Migración completada.
+✅ Funcionalidad migrada a *ESSA.
 
 ---
 
 ### TESSA
 
-✅ Módulo operativo.
+✅ Módulo op*rativo.
 
-Versión actual:
+✅ Lanzador CMD portable i*plementado.
+
+✅ Compatible con cual*uier ubicación del proyecto.
+
+Vers*ón actual:
 
 ```text
 2.0.0-alpha
-```
+``*
 
----
+Próxima evolución:
+
+- Consolidac*ón de Users.ps1.
+- Migración gradu*l del uso operativo.
+- Sustitución*definitiva de la versión Batch.
+
+-*-
 
 ## Responsable
 
 ```text
-Somos TSS CO.
+Fabian R. Vargas
+```
+
+Organización:
+
+```text
+Tecnossystem Co.
 ```
 
 Proyecto:

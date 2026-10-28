@@ -32,12 +32,12 @@ TESSA
         └── Drivers-Lenovo.ps1
 ```
 
-### Acceso Directo
+### Lanzador
 
 ```text
 TESSA
 └── Controladores
-    └── Drivers-Lenovo.lnk
+    └── Drivers-Lenovo.cmd
 ```
 
 ### Repositorio de Controladores
@@ -50,12 +50,52 @@ TESSA
 
 ---
 
+## Método de Ejecución
+
+El módulo se ejecuta mediante un lanzador CMD portable.
+
+Archivo utilizado:
+
+```text
+Drivers-Lenovo.cmd
+```
+
+El lanzador proporciona:
+
+- Elevación automática a administrador mediante UAC.
+- Ejecución de PowerShell con ExecutionPolicy Bypass.
+- Compatibilidad con cualquier ubicación del proyecto.
+- Resolución automática de rutas relativas.
+- Independencia de rutas absolutas.
+
+Ejemplos válidos:
+
+```text
+C:\TESSA
+```
+
+```text
+D:\TESSA
+```
+
+```text
+E:\Herramientas\TESSA
+```
+
+```text
+F:\USB\TESSA
+```
+
+La ejecución no requiere modificaciones siempre que se conserve la estructura interna de TESSA.
+
+---
+
 ## Estado del Módulo
 
 | Elemento | Estado |
 |-----------|-----------|
 | Migración a TESSA | Completa |
-| Producción | Activo |
+| Producción | Operativo |
 | Documentación | Completa |
 | Refactorización | Parcial |
 | Dependencia AIMT | Eliminada |
@@ -107,343 +147,359 @@ Localiza de forma automática todos los archivos:
 
 presentes dentro de* repositorio Lenovo.
 
-La búsqueda *ncluye subdirectorios.
+La búsqueda *ncluye todos los subdirectorios.
 
----
+*--
 
-### I*stalación de Drivers
+### Instalación de Drivers
 
-Utiliza:
+Ut*liza:
 
-``*text
-pnputil.exe
+```text
+pnputil*exe
 ```
 
-para realiza* la instalación de los controlador*s encontrados.
+para realizar la instalac*ón de los controladores encontrado*.
 
 Ejemplo:
 
-```power*hell
-pnputil /add-driver archivo.i*f /install
-```
+```powershell
+pnputil*/add-driver archivo.inf /install
+`*`
 
 ---
 
-### Seguimien*o de Progreso
+### Seguimiento de Pro*reso
 
-Durante la ejecució* se muestra el estado de avance.
+Durante la ejecución se mues*ra el estado de avance.
 
-*jemplo:
-
-```text
+Ejemplo:
+*```text
 [1/25]
 [2/25]
-[3/*5]
+[3/25]
 ```
 
----
+*--
 
-### Registro de Resul*ados
+### Registro de Resultados
 
-Genera registros de ejecució* que incluyen:
+Ge*era registros de ejecución que inc*uyen:
 
-- Inicio del proce*o.
-- Usuario ejecutor.
-- Alias del*equipo.
-- Controladores procesados*
-- Errores detectados.
-- Resumen f*nal.
-
----
-
-### Resumen Final
-
-Al f*nalizar se presenta:
-
-- Fecha de f*nalización.
-- Tiempo total de ejec*ción.
-- Total de controladores pro*esados.
-- Listado completo de cont*oladores instalados.
+- Inicio del proceso.
+- Usu*rio ejecutor.
+- Alias del equipo.
+* Controladores procesados.
+- Error*s detectados.
+- Res*men final.
 
 ---
 
-## Estr*ctura Asociada
+### Resumen Final*
+Al finalizar se presenta:
 
-### Controladores
-*```text
+- Fech* de finalización.
+- Tiempo total d* ejecución.
+- Total de control*dores procesados.
+- Listado comple*o de controladores instalados.
+
+--*
+
+## Estructura Asociada
+
+### Cont*oladores
+
+```text
 Controladores
 │
-├── Core
-│*  └── Drivers-Lenovo.ps1
+*── Core
+│  *└── Drivers-Lenovo.ps1
+*
+├── Drivers-Lenovo.cmd
+*
+├── Lenovo
+│   └*─ M710q
 │
-├── Len*vo
-│   └── M710q
-│
-├── Dell
-│
-└── *rivers-Lenovo.lnk
+└──*Dell
 ```
 
 ---
 
-### Lo*s
+### Logs
 
-Ubicación:
+Ubicación*
 
 ```text
 TESSA
-└── L*gs
+└*─ Logs
 ```
 
-Ejemplo de log generado:
-
-*``text
-Drivers-Lenovo_BOGABC123.lo*
-```
-
----
-
-## Flujo de Ejecución
-
-*``text
-Inicio
-│
-├── Configuración *e entorno
-├── Obtención del serial*├── Generación del alias visual
-├─* Inicialización del log
-│
-├── Desc*brimiento de archivos INF
-│
-├── In*talación de controladores
-│   ├── *river 1
-│   ├── Driver 2
-│   ├── D*iver N
-│
-├── Consolidación de resu*tados
-├── Generación de resumen
-├─* Generación de listado final
-│
-└──*Finalización
-```
-
----
-
-## Dependen*ias
-
-### Sistema Operativo
-
-Window*.
-
----
-
-### Herramientas del Siste*a
+Ejemplo de log generad**
 
 ```text
-pnputil.exe
+Drivers-Lenovo_BOG*BC123.log
 ```
 
 ---
 
-#*# PowerShell
+## Flujo de Ej*cución
 
-Comandos utilizados:*
+```text
+Inicio
+*
+├── Configuración de entorno
+├*─ Obtención del serial
+├── Generac*ón*del alias visual
+├── Inicializació* del log
+│
+├── Descubrimiento de a*chivos INF
+│
+├── Instalación de co*trol*dores
+│   ├── Driver 1*│   ├── Driver 2
+*   ├── Driver N
+│
+*── Consolidación de resultados
+├──*Gener*ción de resumen
+├── Generación de *istado final
+│
+└── Finalización
+*``
+
+---
+
+## Dependencias
+
+### Sist*ma Oper*tivo
+
+Windows.
+
+---
+
+### Herramien*as del Sistema
+
+```text
+pnputil.ex*
+```
+
+---
+
+### PowerShell
+
+Comando* utilizados:
+
 ```powershell
-Get-CimInstance
-Get*ChildItem
-Start-Process
+Get-Ci*Instance
+Get-ChildItem
+Start-Proce*s
 Test-Path
-*ew-Item
+New-Item
 Out-File
-Resolve-Path
-Join*Path
+Reso*ve-Path
+Join-Path
 ```
 
 ---
 
-## Convención de Ru*as TESSA
+## Con*ención de Rutas TESSA
 
-A partir de TESSA las ru*as ya no utilizan ubicaciones abso*utas.
+A partir de*TESSA las rutas ya no utilizan ubi*aciones absolutas.
 
 ### Antes
 
-```powershell
-C:*AIMT\Controladores\Lenovo
+```*owershell
+C:\AIMT\Controladores\Le*ovo
 ```
 
-```*owershell
-C:\AIMT\Logs
+```powershell
+C:\AIMT\Log*
 ```
 
 ---
 
-#*# Ahora
+### Ahora
 
-Las rutas se generan diná*icamente desde la ubicación del sc*ipt.
+Las rutas se*generan dinámicamente desde la ubi*ación del script.
 
-Implementación:
-
-```powershe*l
-$TessaRoot = (Resolve-Path "$PSS*riptRoot\..\..").Path
-```
+Implementación:*
+```powershell
+$TessaRoot = (Resol*e-Path "$PSScriptRoot\..\..").Path*```
 
 Resultado:
 
 ```text
 TESSA
-```
-
+```*
 ---
 
 ### Ventajas
 
-- Portabilidad total.
-- Eliminación de dependencias de AIMT.
-- Compatibilidad con cualquier unidad.
-- Facilidad de despliegue.
+- Portabilidad*total.
+-*Eliminación de dependencias de AIM*.
+- Compatibilidad con cualquier u*icación del proyecto.
+- Facilidad *e despliegue.
 
 Ejemplos válidos:
 
-```text
+*``text
 C:\TESSA
 ```
 
 ```text
-D:\TESSA
+*:\TESSA
 ```
 
-```text
-E:\Herramientas\TESSA
-```
+```text*E:\Herramientas\TESSA*```
 
-Siempre que la estructura interna permanezca intacta.
+Siempre que la estructura int*rna permanezca intacta.
 
 ---
 
-## Historial AIMT
+## H*storial AIMT
 
-El historial ya no se almacena dentro del código.
+El historial*ya no se almacena dentro del códig*.
 
-Se conserva únicamente con fines documentales.
+Se conserva únicamente con fine* documentales.
 
-| Versión | Descripción |
+| Versión | Descri*ción |
 |----------|----------|
-| 1.0.0 | Script original en Batch |
-| 1.1.0 | Conversión a PowerShell con cabecera y log |
-| 1.2.0 | Incorporación de alias visual del equipo |
-| 1.3.0 | Instalación con seguimiento individual |
-| 1.3.1 | Unificación de cabeceras |
-| 1.3.2 | Versión de simulación |
-| 1.3.3 | Producción con resumen final |
-| 1.3.4 | Producción con listado completo de controladores |
-| 1.3.5 | Simulación con listado completo |
+| 1*0.0 | Script original en Batch |
+|*1.1.0 | Conversión a PowerShell co* cabecera y log |
+| 1.2.0 | Incorp*r*ción de alias visual del equipo |
+* 1.3.0 | Instalación*con seguimiento individual |
+| 1.3** | Unificación de cabeceras |
+|*1.3.2 | Versión de*simulación |
+| 1.3.3*| Producción con resumen final |
+|*1.3.4 | Producción con listado com*leto*de controladores |
+| 1.3.* | Simulación con listado completo*|
 
 ---
 
-## Cambios Introducidos en TESSA
+##*Cambios Introducidos en TESSA
 
-### Actualización de Identidad
+###*Actualización de Identidad
 
-Antes:
-
+Antes:*
 ```text
-Somos TSS CO. - Instalación de Controladores Lenovo
+Somos TSS CO. - Instalaci*n de Controladores Lenovo
 ```
 
-Ahora:
+Aho*a:
 
 ```text
-Somos TSS CO. | TESSA
-Tecnossystem Smart Setup Assistant
-```
+Somos TSS CO. | TESSA*Tecnossystem Smart Setup Assistant*```
 
 ---
 
-### Eliminación del Historial Interno
+### Eliminación del Hist*rial Interno
 
-El historial ya no se almacena dentro de los scripts.
+El historial ya no s* almacena dentro de los scripts.
 
-La gestión de cambios se realiza mediante:
+*a gestión de cambios se realiza me*iante:
 
 - GitHub.
 - Commits.
-- Historial del repositorio.
-- Documentación técnica.
+- His*orial del repositorio.
+- Documenta*ión técnica.
 
 ---
 
-### Eliminación de Dependencia AIMT
+### Eliminación*de Dependencia AIMT
 
-La dependencia:
+La dependenci*:
 
 ```text
 C:\AIMT
 ```
 
-fue eliminada completamente.
+fue elimin*da completamente.
 
 ---
 
-### Nueva Convención de Logs
+### Sustit*ción de Accesos Directos
+
+Los acce*os directos tradicionales:
+
+```tex*
+*.lnk
+```
+
+fueron reemplazados po* lanzadores:
+
+```text
+*.cmd
+```
+
+B*neficios:
+
+- Compatibilidad con Gi*.
+- Portabilidad.
+- Facilidad de m*ntenimiento.
+- Eliminación de ruta* absolutas.
+- Elevación automática*a administrador.
+
+---
+
+### Nueva C*nvención de Logs
 
 Antes:
 
 ```text
-Drivers_Update_BOGXXXX.log
+*rivers_Update_BOGXXXX.log
 ```
 
-Ahora:
+Aho*a:
 
 ```text
-Drivers-Lenovo_BOGXXXX.log
+Drivers-Lenovo_BOGXXXX*log
 ```
 
 ---
 
-## Riesgos Detectados
+## Riesgos Detectado*
 
 ### Instalación Masiva
 
-Actualmente todos los archivos INF encontrados son procesados.
+Actualme*te todos los archivos INF encontra*os son procesados.
 
-No existe filtrado por:
+No existe filt*ado por:
 
 - Modelo.
 - Familia.
-- Generación.
+- G*neración.
 
 ---
 
-### Dependencia del Repositorio
+### Dependencia de* Repositorio
 
-La efectividad del módulo depende de la calidad y organización de los controladores almacenados.
+La efectividad del m*dulo depende de la calidad y organ*zación de los controladores almace*ados.
 
 ---
 
-### Validación de Compatibilidad
+### Validación de Comp*tibilidad
 
-Actualmente no existe validación previa entre:
+Actualmente no existe v*lidación previa entre:
 
-- Modelo del equipo.
+- Modelo d*l equipo.
 - Driver encontrado.
-- Compatibilidad del paquete.
+- C*mpatibilidad del paquete.
 
 ---
 
-## Mejoras Futuras
+##*Mejoras Futuras
 
-### Prioridad Alta
+### Prioridad Alt*
 
-- Detección automática del modelo Lenovo.
-- Validación de controladores antes de instalar.
-- Mejora en el manejo de errores.
+- Detección automática del model* Lenovo.
+- Validación de controlad*res antes de instalar.
+- Mejora en*el manejo de errores.
 
 ---
 
-### Prioridad Media
+### Pr*oridad Media
 
-- Generación de inventario previo.
-- Reporte estructurado de resultados.
-- Validación posterior a la instalación.
+- Generación de inve*tario previo.
+- Reporte estructura*o de resultados.
+- Validación post*rior a la instalación.
 
 ---
 
@@ -459,13 +515,21 @@ Actualmente no existe validación previa entre:
 
 ### AIMT
 
-✅ Migración completada.
+✅ Funcionalidad migrada a TESSA.
 
 ---
 
 ### TESSA
 
 ✅ Módulo operativo.
+
+✅ Rutas dinámicas implementadas.
+
+✅ Logs implementados.
+
+✅ Lanzador CMD portable implementado.
+
+✅ Compatible con cualquier ubicación del proyecto.
 
 Versión actual:
 
@@ -484,7 +548,13 @@ Próximas actividades:
 ## Responsable
 
 ```text
-Somos TSS CO.
+Fabian R. Vargas
+```
+
+Organización:
+
+```text
+Tecnossystem Co.
 ```
 
 Proyecto:

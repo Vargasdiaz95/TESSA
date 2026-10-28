@@ -21,7 +21,7 @@ Su función principal es aplicar restricciones corporativas mediante redireccion
 
 ## Ubicación
 
-### Script
+### Motor del Módulo
 
 ```text
 TESSA
@@ -31,14 +31,54 @@ TESSA
             └── Hosts.ps1
 ```
 
-### Acceso Directo
+### Lanzador
 
 ```text
 TESSA
 └── Perfiles
     └── SIC
-        └── Hosts.lnk
+        └── Hosts.cmd
 ```
+
+---
+
+## Método de Ejecución
+
+El módulo se ejecuta mediante un lanzador CMD portable.
+
+Archivo utilizado:
+
+```text
+Hosts.cmd
+```
+
+El lanzador proporciona:
+
+- Elevación automática a administrador mediante UAC.
+- Ejecución de PowerShell con ExecutionPolicy Bypass.
+- Compatibilidad con cualquier ubicación del proyecto.
+- Resolución automática de rutas relativas.
+- Independencia de rutas absolutas.
+
+Ejemplos válidos:
+
+```text
+C:\TESSA
+```
+
+```text
+D:\TESSA
+```
+
+```text
+E:\Herramientas\TESSA
+```
+
+```text
+F:\USB\TESSA
+```
+
+La ejecución no requiere modificaciones siempre que se conserve la estructura interna de TESSA.
 
 ---
 
@@ -47,7 +87,7 @@ TESSA
 | Elemento | Estado |
 |----------|----------|
 | Migración a TESSA | Completa |
-| Producción | Activo |
+| Producción | Operativo |
 | Documentación | Completa |
 | Refactorización | Parcial |
 | Dependencia AIMT | Eliminada |
@@ -94,15 +134,15 @@ con el objetivo de impedir el acceso desde el equipo.
 
 ---
 
-### Actualización DNS
+### Actualización de Caché DNS
 
-Después de aplicar cambios ejecuta:
+Después de aplicar los cambios ejecuta:
 
 ```text
 ipconfig /flushdns
 ```
 
-para limpiar la caché DNS.
+para limpiar la caché DNS del sistema.
 
 ---
 
@@ -110,9 +150,9 @@ para limpiar la caché DNS.
 
 Genera un log con:
 
-- Usuario.
-- Alias del equipo.
-- Hora de ejecución.
+- Usuario ejecutor.
+- Alias visual del equipo.
+- Fecha y hora de ejecución.
 - Resultado del proceso.
 
 ---
@@ -134,7 +174,7 @@ Genera un log con:
 
 ---
 
-### Mensajería
+### Plataformas de Mensajería
 
 - WhatsApp Web
 - WhatsApp API
@@ -148,11 +188,12 @@ Genera un log con:
 Inicio
 │
 ├── Configuración de entorno
-├── Generación de alias
-├── Inicialización de log
+├── Generación de alias visual
+├── Inicialización del log
 │
 ├── Actualización del archivo Hosts
-├── Limpieza de DNS
+├── Aplicación de dominios bloqueados
+├── Limpieza de caché DNS
 │
 ├── Registro de resultado
 │
@@ -204,20 +245,54 @@ New-Item
 
 ## Convención de Rutas TESSA
 
+Las rutas se generan dinámicamente a partir de la ubicación del script.
+
 Implementación actual:
 
 ```powershell
 $TessaRoot = (Resolve-Path "$PSScriptRoot\..\..\..").Path
 ```
 
+Resultado:
+
+```text
+TESSA
+```
+
 ---
 
-### Logs
+### Ventajas
+
+- Portabilidad total.
+- Eliminación de dependencias de AIMT.
+- Compatibilidad con cualquier ubicación del proyecto.
+- Facilidad de despliegue.
+
+Ejemplos válidos:
+
+```text
+C:\TESSA
+```
+
+```text
+D:\TESSA
+```
+
+```text
+E:\Herramientas\TESSA
+```
+
+Siempre que la estructura interna permanezca intacta.
+
+---
+
+## Logs
 
 Ubicación:
 
 ```text
-TESSA\Logs
+TESSA
+└── Logs
 ```
 
 Ejemplo:
@@ -232,7 +307,7 @@ Hosts_BOGABC123.log
 
 El historial ya no se almacena dentro del script.
 
-Se conserva únicamente como documentación.
+Se conserva únicamente con fines documentales.
 
 | Versión | Descripción |
 |----------|----------|
@@ -242,7 +317,7 @@ Se conserva únicamente como documentación.
 
 ---
 
-## Cambios Implementados en TESSA
+## Cambios Introducidos en TESSA
 
 ### Actualización de Identidad
 
@@ -261,6 +336,17 @@ Tecnossystem Smart Setup Assistant
 
 ---
 
+### Eliminación del Historial Interno
+
+La trazabilidad se gestiona mediante:
+
+- GitHub.
+- Commits.
+- Historial del repositorio.
+- Documentación técnica.
+
+---
+
 ### Eliminación de Dependencia AIMT
 
 La dependencia:
@@ -273,97 +359,120 @@ fue eliminada completamente.
 
 ---
 
-### Eliminación del Historial Interno
+### Sustitución de Accesos Directos
 
-La trazabilidad se gestiona mediante:
+Los accesos directos tradicionales:
 
-- GitHub.
-- Commits.
-- Historial del repositorio.
-- Documentación técnica.
+```text
+*.lnk
+```
+
+fueron reemplazados por *anzadores:
+
+```text
+*.cmd
+```
+
+Ben*f*cios:
+
+- Compatibilidad con Git.
+-*Portabilidad.
+- Facilidad de mante*imiento.
+- Eliminación de rutas ab*olutas.
+- Elevación automática*a administrador.
 
 ---
 
-### Incorporación de Logs
+### Incorpo*ación de Logs
 
-Se incorpora registro formal de ejecución dentro de:
+Se incorporó regist*o formal de ejecución*dentro de:
 
 ```text
 TESSA\Logs
-```
-
+```*
 ---
 
 ## Riesgos Detectados
 
-### Duplicación de Entradas
+### D*plicación de Entradas
 
-Actualmente el script agrega registros sin validar si ya existen.
+Actualmente*el script agrega registros sin val*dar si ya existen.
 
-Ejecuciones repetidas pueden generar entradas duplicadas.
+Ejecuciones re*etidas pueden generar entradas dup*icadas dentro del archivo Hosts.
 
----
+*--
 
 ### Ausencia de Respaldo
 
-No se realiza copia de seguridad del archivo Hosts antes de modificarlo.
+No s* realiza copia de seguridad del ar*hivo Hosts antes de modificarlo.
 
----
+*--
 
 ### Configuración Embebida
 
-Los dominios bloqueados se encuentran definidos directamente dentro del código.
+Lo* dominios bloqueados se encuentran*definidos directamente dentro del *ódigo.
 
 ---
 
 ## Mejoras Futuras
 
-### Prioridad Alta
+#*# Prioridad Alta
 
-- Validar dominios existentes.
-- Evitar duplicados.
-- Generar respaldo automático.
+- Validar domini*s existentes antes de agregarlos.
+* Evitar entradas duplicadas.
+- Gen*rar respaldo automático del archiv* Hosts.
 
 ---
 
 ### Prioridad Media
-
-- Externalizar dominios bloqueados.
-- Reporte estructurado de cambios.
-
----
-
-### Prioridad Baja
-
-- Gestión dinámica por perfiles.
-- Listas administrables desde configuración.
+*- Externalizar dominios bloqueados*
+- Generar reportes estructurados *e cambios.
 
 ---
 
-## Estado de Migración
+### Prioridad Baj*
+
+- Gestión dinámica por perfiles.*- Listas administrables mediante c*nfiguración externa.
+
+---
+
+## Esta*o de Migración
 
 ### AIMT
 
-✅ Migración completada.
+✅ Funcio*alidad migrada a TESSA.
 
 ---
 
-### TESSA
+### *ESSA
 
 ✅ Módulo operativo.
 
-Versión actual:
+✅ Rutas*dinámicas implementadas.
+
+✅ Logs i*plementados.
+
+✅ Lanzador CMD porta*le implementado.
+
+✅ Compatible con*cualquier ubicación del proyecto.
+*Versión actual:
 
 ```text
-2.0.0-alpha
+2.0.0-alp*a
 ```
 
 ---
 
 ## Responsable
 
+```tex*
+Fabian R. Vargas
+```
+
+Organización:
+
 ```text
-Somos TSS CO.
+Tecnossystem Co.
 ```
 
 Proyecto:

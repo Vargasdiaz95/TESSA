@@ -21,7 +21,7 @@ Su objetivo es estandarizar la apariencia y la configuración básica de todos l
 
 ## Ubicación
 
-### Script
+### Motor del Módulo
 
 ```text
 TESSA
@@ -31,13 +31,13 @@ TESSA
             └── Personalizacion.ps1
 ```
 
-### Acceso Directo
+### Lanzador
 
 ```text
 TESSA
 └── Perfiles
     └── SIC
-        └── Personalizacion.lnk
+        └── Personalizacion.cmd
 ```
 
 ### Recursos Utilizados
@@ -51,12 +51,52 @@ TESSA
 
 ---
 
+## Método de Ejecución
+
+El módulo se ejecuta mediante un lanzador CMD portable.
+
+Archivo utilizado:
+
+```text
+Personalizacion.cmd
+```
+
+El lanzador proporciona:
+
+- Elevación automática a administrador mediante UAC.
+- Ejecución de PowerShell con ExecutionPolicy Bypass.
+- Compatibilidad con cualquier ubicación del proyecto.
+- Resolución automática de rutas relativas.
+- Independencia de rutas absolutas.
+
+Ejemplos válidos:
+
+```text
+C:\TESSA
+```
+
+```text
+D:\TESSA
+```
+
+```text
+E:\Herramientas\TESSA
+```
+
+```text
+F:\USB\TESSA
+```
+
+La ejecución no requiere modificaciones siempre que se conserve la estructura interna de TESSA.
+
+---
+
 ## Estado del Módulo
 
 | Elemento | Estado |
 |----------|----------|
 | Migración a TESSA | Completa |
-| Producción | Activo |
+| Producción | Operativo |
 | Documentación | Completa |
 | Refactorización | Parcial |
 | Dependencia AIMT | Eliminada |
@@ -112,7 +152,7 @@ Aplica configuraciones sobre:
 HKU\.DEFAULT
 ```
 
-permitiendo que todos los usuarios creados posteriormente hereden las personalizaciones.
+permitiendo que todos los usuarios creados posteriormente hereden las personalizaciones definidas por la organización.
 
 ---
 
@@ -124,7 +164,7 @@ Recorre:
 C:\Users
 ```
 
-y aplica configuraciones a los usuarios existentes.
+y aplica las configuraciones a los perfiles existentes del sistema.
 
 ---
 
@@ -155,6 +195,8 @@ y
 EnableHwkbTextPredictionMultilingual
 ```
 
+para mejorar la experiencia de escritura en Windows.
+
 ---
 
 ### Porcentaje de Batería
@@ -165,13 +207,13 @@ Habilita:
 ShowPercentage
 ```
 
-cuando el sistema operativo soporta dicha característica.
+cuando la versión de Windows y el hardware soportan dicha funcionalidad.
 
 ---
 
 ### Gestión de NTUSER.DAT
 
-Carga temporalmente los perfiles de usuario para aplicar configuraciones sin necesidad de inicio de sesión.
+Carga temporalmente los perfiles de usuario para aplicar configuraciones sin necesidad de iniciar sesión con cada cuenta.
 
 ---
 
@@ -194,22 +236,22 @@ thumb-imgpsh_fullsize_anim.png
 Inicio
 │
 ├── Configuración de entorno
-├── Generación de alias
-├── Inicialización de log
+├── Generación de alias visual
+├── Inicialización del log
 │
-├── Copia de wallpaper
+├── Copia de wallpaper corporativo
 │
 ├── Configuración Default User
 │   ├── Wallpaper
 │   ├── Predicción de texto
-│   └── Porcentaje batería
+│   └── Porcentaje de batería
 │
-├── Recorrido de usuarios
+├── Recorrido de usuarios existentes
 │
 ├── Aplicación de configuraciones
 │   ├── Wallpaper
 │   ├── Predicción de texto
-│   └── Porcentaje batería
+│   └── Porcentaje de batería
 │
 ├── Registro de resultado
 │
@@ -268,10 +310,18 @@ Out-File
 
 ## Convención de Rutas TESSA
 
+Las rutas se generan dinámicamente a partir de la ubicación del script.
+
 Implementación actual:
 
 ```powershell
 $TessaRoot = (Resolve-Path "$PSScriptRoot\..\..\..").Path
+```
+
+Resultado:
+
+```text
+TESSA
 ```
 
 ---
@@ -287,12 +337,37 @@ C:\AIMT\Wallpapers
 ### Ahora
 
 ```text
-Perfiles\SIC\Wallpapers
+TESSA\Perfiles\SIC\Wallpapers
 ```
 
 ---
 
-### Logs
+### Ventajas
+
+- Eliminación de dependencias de AIMT.
+- Portabilidad total.
+- Compatibilidad con cualquier ubicación del proyecto.
+- Facilidad de despliegue.
+
+Ejemplos válidos:
+
+```text
+C:\TESSA
+```
+
+```text
+D:\TESSA
+```
+
+```text
+E:\Herramientas\TESSA
+```
+
+Siempre que la estructura interna permanezca intacta.
+
+---
+
+## Logs
 
 Ubicación:
 
@@ -310,7 +385,7 @@ Personalizacion_BOGABC123.log
 
 ## Historial AIMT
 
-El historial deja de existir dentro del código.
+El historial ya no se almacena dentro del código.
 
 Se conserva únicamente mediante documentación.
 
@@ -341,6 +416,17 @@ Tecnossystem Smart Setup Assistant
 
 ---
 
+### Eliminación del Historial Interno
+
+La trazabilidad se realiza mediante:
+
+- GitHub.
+- Commits.
+- Historial del repositorio.
+- Documentación técnica.
+
+---
+
 ### Eliminación de Dependencia AIMT
 
 La referencia:
@@ -353,44 +439,56 @@ fue eliminada completamente.
 
 ---
 
-### Incorporación de Logs
+### Sustitución de Accesos Directos
 
-Se incorpora registro de ejecución dentro de:
+Los accesos directos tradicionales:
 
 ```text
+*.lnk
+```
+
+fueron reempla*ados por lanzadores:
+
+```text
+*.cm*
+```
+
+Beneficios:
+
+- Compatibilida* con Git.
+- Portabilidad.
+- Facili*ad de mantenimiento.
+- Eliminación*de rutas absolutas.
+- Elevación au*omática a administrador.
+
+---
+
+###*Incorporación de Logs
+
+Se incorpor* registro de ejecución dentro de:
+*```text
 TESSA\Logs
 ```
 
 ---
 
-### Eliminación del Historial Interno
+## Ri*sgos Detectados
 
-La trazabilidad se realiza mediante:
+### Dependencia d* Recursos
 
-- GitHub.
-- Commits.
-- Historial del repositorio.
-- Documentación técnica.
-
----
-
-## Riesgos Detectados
-
-### Dependencia de Recursos
-
-La ejecución depende de la existencia de los fondos corporativos.
+La ejecución depende de*la existencia de los fondos corpor*tivos definidos en el repositorio.
 
 ---
 
 ### Configuración de Registro
 
-Requiere permisos administrativos.
+Requiere permisos administrativos para aplicar modificaciones al registro y a los perfiles de usuario.
 
 ---
 
 ### Exclusiones Fijas
 
-Los usuarios excluidos están definidos directamente en el script.
+Los usuarios excluidos se encuentran definidos directamente dentro del script.
 
 ---
 
@@ -400,6 +498,7 @@ Los usuarios excluidos están definidos directamente en el script.
 
 - Validación previa de recursos gráficos.
 - Registro detallado de configuraciones aplicadas.
+- Verificación automática de integridad de recursos.
 
 ---
 
@@ -407,6 +506,7 @@ Los usuarios excluidos están definidos directamente en el script.
 
 - Configuración dinámica de recursos.
 - Soporte para perfiles adicionales.
+- Aplicación condicional según perfil corporativo.
 
 ---
 
@@ -414,6 +514,7 @@ Los usuarios excluidos están definidos directamente en el script.
 
 - Cambio automático de pantalla de bloqueo.
 - Aplicación de branding corporativo avanzado.
+- Gestión centralizada de configuraciones visuales.
 
 ---
 
@@ -421,7 +522,7 @@ Los usuarios excluidos están definidos directamente en el script.
 
 ### AIMT
 
-✅ Migración completada.
+✅ Funcionalidad migrada a TESSA.
 
 ---
 
@@ -429,18 +530,38 @@ Los usuarios excluidos están definidos directamente en el script.
 
 ✅ Módulo operativo.
 
+✅ Rutas dinámicas implementadas.
+
+✅ Logs implementados.
+
+✅ Lanzador CMD portable implementado.
+
+✅ Compatible con cualquier ubicación del proyecto.
+
 Versión actual:
 
 ```text
 2.0.0-alpha
 ```
 
+Próximas actividades:
+
+- Optimización.
+- Refactorización progresiva.
+- Implementación de configuraciones dinámicas.
+
 ---
 
 ## Responsable
 
 ```text
-Somos TSS CO.
+Fabian R. Vargas
+```
+
+Organización:
+
+```text
+Tecnossystem Co.
 ```
 
 Proyecto:

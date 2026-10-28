@@ -23,7 +23,7 @@ Este módulo constituye el punto de entrada principal para el proceso de alistam
 
 ## Ubicación
 
-### Script
+### Motor del Módulo
 
 ```text
 TESSA
@@ -33,14 +33,54 @@ TESSA
             └── Init.ps1
 ```
 
-### Acceso Directo
+### Lanzador
 
 ```text
 TESSA
 └── Perfiles
     └── SIC
-        └── Init.lnk
+        └── Init.cmd
 ```
+
+---
+
+## Método de Ejecución
+
+El módulo se ejecuta mediante un lanzador CMD portable.
+
+Archivo utilizado:
+
+```text
+Init.cmd
+```
+
+El lanzador proporciona:
+
+- Elevación automática a administrador mediante UAC.
+- Ejecución de PowerShell con ExecutionPolicy Bypass.
+- Compatibilidad con cualquier ubicación del proyecto.
+- Resolución automática de rutas relativas.
+- Independencia de rutas absolutas.
+
+Ejemplos válidos:
+
+```text
+C:\TESSA
+```
+
+```text
+D:\TESSA
+```
+
+```text
+E:\Herramientas\TESSA
+```
+
+```text
+F:\USB\TESSA
+```
+
+La ejecución no requiere modificaciones siempre que se conserve la estructura interna de TESSA.
 
 ---
 
@@ -49,7 +89,7 @@ TESSA
 | Elemento | Estado |
 |----------|----------|
 | Migración a TESSA | Completa |
-| Producción | Activo |
+| Producción | Operativo |
 | Documentación | Completa |
 | Refactorización | Parcial |
 | Dependencia AIMT | Eliminada |
@@ -165,12 +205,12 @@ Genera un log detallado de la ejecución.
 
 Incluye:
 
-- Inicio.
-- Usuario.
-- Equipo.
+- Inicio del proceso.
+- Usuario ejecutor.
+- Equipo procesado.
 - Aplicaciones instaladas.
 - Configuraciones aplicadas.
-- Resumen final.
+- Resumen final de ejecución.
 
 ---
 
@@ -183,7 +223,7 @@ Aplicaciones base:
 - 7-Zip
 - Adobe Reader
 - Google Chrome
-- Java Runtime Environment
+- Java Runtime Environment (JRE)
 - LibreOffice
 
 ---
@@ -262,8 +302,11 @@ Software
 
 ### Logs
 
+Ubicación:
+
 ```text
-Logs
+TESSA
+└── Logs
 ```
 
 Ejemplo:
@@ -281,13 +324,13 @@ Inicio
 │
 ├── Preparación de entorno
 ├── Generación de alias del equipo
-├── Creación de log
+├── Inicialización del log
 │
 ├── Fase 1
 │   ├── 7-Zip
 │   ├── Adobe Reader
 │   ├── Google Chrome
-│   ├── Java
+│   ├── Java Runtime Environment
 │   └── LibreOffice
 │
 ├── Fase 2
@@ -303,7 +346,7 @@ Inicio
 │   └── .NET Framework 3.5
 │
 ├── Renombrado del equipo
-├── Cambio de etiqueta de unidad
+├── Etiquetado de unidad
 ├── Generación de resumen
 │
 └── Finalización
@@ -333,7 +376,7 @@ msiexec.exe
 
 ### PowerShell
 
-Funciones utilizadas:
+Comandos utilizados:
 
 ```powershell
 Get-CimInstance
@@ -351,12 +394,18 @@ Rename-Computer
 
 ## Convención de Rutas TESSA
 
-A partir de TESSA las rutas se resuelven de forma dinámica.
+Las rutas se generan dinámicamente a partir de la ubicación del script.
 
 Implementación:
 
 ```powershell
 $TessaRoot = (Resolve-Path "$PSScriptRoot\..\..\..").Path
+```
+
+Resultado:
+
+```text
+TESSA
 ```
 
 ---
@@ -396,8 +445,8 @@ TESSA\Logs
 ### Ventajas
 
 - Eliminación de dependencias de AIMT.
-- Portabilidad.
-- Compatibilidad con cualquier unidad.
+- Portabilidad total.
+- Compatibilidad con cualquier ubicación del proyecto.
 - Despliegue simplificado.
 
 Ejemplos válidos:
@@ -413,6 +462,8 @@ D:\TESSA
 ```text
 E:\Herramientas\TESSA
 ```
+
+Siempre que la estructura interna permanezca intacta.
 
 ---
 
@@ -431,7 +482,7 @@ Se conserva únicamente con fines documentales.
 | 1.3.0 | Ejecución de rutinas externas |
 | 1.3.3 | Ajustes de hostname, instaladores y pausa final |
 | 1.3.4 | Actualización de instaladores |
-| 1.3.5 | Ajuste instalación Java |
+| 1.3.5 | Ajuste de instalación de Java |
 | 1.3.6 | Invocación directa de instaladores |
 | 1.3.7 | Uso de Start-Process -Wait |
 | 1.3.8 | Cambio de etiqueta del volumen C |
@@ -484,32 +535,55 @@ fue eliminada completamente.
 
 ---
 
-### Actualización de Rutas
+### Sustitución de Accesos Directos
+
+Los accesos directos tradicionales:
+
+```text
+*.lnk
+```
+
+fueron reemplazados por *anzadores:
+
+```text
+*.cmd
+```
+
+Ben*ficios:
+
+- Compatibilidad con Git.*- Portabilidad.
+- Facilidad de man*enimiento.
+- Eliminación de rutas *bsolutas.
+- Elevación automática a*administrador.
+
+---
+
+### Actualiza*ión de Rutas
 
 Antes:
 
 ```text
-C:\AIMT\Apps
+C:\A*MT\Apps
 ```
 
 Ahora:
 
 ```text
-Software\Aplicaciones
+TESSA*Software\Aplicaciones
 ```
 
 ---
 
-Antes:
+An*es:
 
 ```text
 C:\AIMT\Componentes
-```
+`*`
 
 Ahora:
 
 ```text
-Software\Componentes
+TESSA\Software\Componentes
 ```
 
 ---
@@ -523,7 +597,7 @@ C:\AIMT\Logs
 Ahora:
 
 ```text
-Logs
+TESSA\Logs
 ```
 
 ---
@@ -600,13 +674,21 @@ están orientadas a equipos Dell.
 
 ### AIMT
 
-✅ Migración completada.
+✅ Funcionalidad migrada a TESSA.
 
 ---
 
 ### TESSA
 
 ✅ Módulo operativo.
+
+✅ Rutas dinámicas implementadas.
+
+✅ Logs implementados.
+
+✅ Lanzador CMD portable implementado.
+
+✅ Compatible con cualquier ubicación del proyecto.
 
 Versión actual:
 
@@ -625,7 +707,13 @@ Próximas actividades:
 ## Responsable
 
 ```text
-Somos TSS CO.
+Fabian R. Vargas
+```
+
+Organización:
+
+```text
+Tecnossystem Co.
 ```
 
 Proyecto:
